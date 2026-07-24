@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services | TechMonx — Web, Mobile, Game Dev, UI/UX, DevOps, AI, Blockchain &amp; QA</title>
+<meta name="description" content="Explore TechMonx's services: web development, mobile app development, game development, UI/UX design, DevOps, AI &amp; machine learning, blockchain development, and QA/software testing.">
+<link rel="icon" href="techmonx-icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .svc-detail{padding:90px 0; border-top:1px solid var(--border);}
+  .svc-detail-grid{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center;}
+  .svc-detail-grid.rev > *:first-child{order:2;}
+  .svc-detail-visual{aspect-ratio:1/1; max-width:380px; border-radius:var(--radius-lg); background:linear-gradient(160deg, rgba(91,140,255,0.1), rgba(217,70,239,0.08)); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; margin:0 auto;}
+  .svc-detail-visual svg{width:36%; opacity:0.9;}
+  .svc-detail-copy .num-tag{font-family:'Space Grotesk'; font-size:13px; color:var(--teal); font-weight:700; margin-bottom:14px; display:block;}
+  .svc-detail-copy h2{font-size:clamp(24px,3vw,32px); margin-bottom:16px;}
+  .svc-detail-copy > p{color:var(--muted); font-size:15.5px; margin-bottom:26px;}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header id="siteHeader">
+  <div class="wrap">
+    <nav class="mainnav">
+      <a href="index.html" class="logo">
+        <svg viewBox="0 0 140 140"><defs><linearGradient id="navG1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#5B8CFF"/><stop offset="50%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#D946EF"/></linearGradient><linearGradient id="navG2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7CF2E0"/><stop offset="100%" stop-color="#5B8CFF"/></linearGradient></defs><polygon points="70,4 128,38 128,106 70,140 12,106 12,38" fill="none" stroke="url(#navG1)" stroke-width="7"/><path d="M35,45 L70,72 L105,45" fill="none" stroke="url(#navG2)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M35,99 L70,72 L105,99" fill="none" stroke="url(#navG1)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="70" cy="72" r="9" fill="#06080D"/><circle cx="70" cy="72" r="9" fill="none" stroke="url(#navG2)" stroke-width="4"/></svg>
+        Tech<span class="grad-text">Monx</span>
+      </a>
+      <div class="nav-links">
+        <div class="nav-item"><a href="about.html">Company</a></div>
+        <div class="nav-item active"><a href="services.html">Services</a></div>
+        <div class="nav-item"><a href="portfolio.html">Portfolio</a></div>
+        <div class="nav-item"><a href="careers.html">Careers</a></div>
+        <div class="nav-item"><a href="blog.html">Blog</a></div>
+        <div class="nav-item"><a href="testimonials.html">Testimonials</a></div>
+        <div class="nav-item"><a href="contact.html">Contact</a></div>
+      </div>
+      <div class="nav-right">
+        <a href="contact.html" class="btn btn-outline btn-sm">Sign In</a>
+        <a href="contact.html" class="btn btn-primary btn-sm suffix">LET'S TALK</a>
+        <div class="burger" id="burger"><span></span><span></span><span></span></div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="about.html">Company</a>
+  <a href="services.html">Services</a>
+  <div class="mn-sub">
+    <a href="services.html#web">Web Development</a>
+    <a href="services.html#mobile">Mobile App Development</a>
+    <a href="services.html#game">Game Development</a>
+    <a href="services.html#uiux">UI/UX Design</a>
+    <a href="services.html#devops">DevOps</a>
+    <a href="services.html#ai">AI &amp; Machine Learning</a>
+    <a href="services.html#blockchain">Blockchain Development</a>
+    <a href="services.html#qa">QA &amp; Testing</a>
+  </div>
+  <a href="portfolio.html">Portfolio</a>
+  <a href="careers.html">Careers</a>
+  <a href="blog.html">Blog</a>
+  <a href="testimonials.html">Testimonials</a>
+  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="btn btn-primary suffix">LET'S TALK</a>
+</div>
+
+<!-- ===== PAGE HERO ===== -->
+<section class="page-hero">
+  <div class="hero-blob hb1"></div>
+  <div class="hero-blob hb2"></div>
+  <div class="wrap">
+    <div class="breadcrumb"><a href="index.html">Home</a> / Services</div>
+    <div class="eyebrow"><span class="dot"></span> What We Do</div>
+    <h1 class="suffix">Custom solutions tailored to your business</h1>
+    <p class="lead">Eight disciplines, one accountable team. Explore what we build, design and ship, from customer-facing web and mobile products to the AI, blockchain and QA work that sits underneath them.</p>
+  </div>
+</section>
+
+<!-- ===== ENGAGEMENT MODELS ===== -->
+<section class="section-tight">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow"><span class="dot"></span> Engagement Models</div>
+      <h2 class="suffix">Work with us the way that suits you</h2>
+    </div>
+    <div class="engage-grid reveal-stagger">
+      <div class="engage-card">
+        <div class="engage-num">01</div>
+        <h3>Consultation</h3>
+        <p>Deep expertise on a variety of software projects, scoped around your organisation's specific needs.</p>
+        <a href="contact.html">Get Started &rarr;</a>
+      </div>
+      <div class="engage-card">
+        <div class="engage-num">02</div>
+        <h3>Hourly Cost</h3>
+        <p>Flexible development for evolving projects. Pay as you go by the hour, with transparent time tracking.</p>
+        <a href="contact.html">Get Started &rarr;</a>
+      </div>
+      <div class="engage-card">
+        <div class="engage-num">03</div>
+        <h3>Staff Augmentation</h3>
+        <p>Work directly with a dedicated team embedded in your workflow, for as long as the project needs.</p>
+        <a href="contact.html">Get Started &rarr;</a>
+      </div>
+      <div class="engage-card">
+        <div class="engage-num">04</div>
+        <h3>Fixed Price</h3>
+        <p>Confined scope, made easy. Full documentation and an accurate quote, locked in from start to finish.</p>
+        <a href="contact.html">Get Started &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WEB DEVELOPMENT ===== -->
+<section class="svc-detail" id="web">
+  <div class="wrap">
+    <div class="svc-detail-grid reveal">
+      <div class="svc-detail-copy">
+        <span class="num-tag">01 / Web Development</span>
+        <h2>Websites and web apps built to convert</h2>
+        <p>Fast, accessible sites and custom web applications on modern frameworks, from marketing sites through to full customer portals and e-commerce platforms. Every build is optimised for load speed and search visibility from day one, because a slow site quietly costs you customers before they even see what you offer.</p>
+        <ul class="tab-feature-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Custom Web Applications</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>E-commerce Development</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Content Management Systems</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Progressive Web Apps</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>API Integrations</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Web Performance &amp; SEO</li>
+        </ul>
+        <div class="tech-badges"><span>React</span><span>Next.js</span><span>Node.js</span><span>WordPress</span><span>PostgreSQL</span><span>AWS</span></div>
+      </div>
+      <div class="svc-detail-visual"><svg viewBox="0 0 24 24" fill="none" stroke="url(#navG1)" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MOBILE APP DEVELOPMENT ===== -->
+<section class="svc-detail" id="mobile">
+  <div class="wrap">
+    <div class="svc-detail-grid rev reveal">
+      <div class="svc-detail-copy">
+        <span class="num-tag">02 / Mobile App Development</span>
+        <h2>Apps people actually keep on their phone</h2>
+        <p>Native and cross-platform mobile apps designed for real retention, not just a launch-day spike. We've shipped consumer apps with real App Store ratings and internal tools used every day by small teams, taking each one from first prototype through to App Store and Play Store launch.</p>
+        <ul class="tab-feature-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Native iOS &amp; Android Development</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Cross-Platform (Flutter/React Native)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>App Store &amp; Play Store Launch</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Push Notifications &amp; Analytics</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Offline-First Architecture</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Post-Launch Support</li>
+        </ul>
+        <div class="tech-badges"><span>Swift</span><span>Kotlin</span><span>Flutter</span><span>React Native</span><span>Firebase</span><span>GraphQL</span></div>
+      </div>
+      <div class="svc-detail-visual"><svg viewBox="0 0 24 24" fill="none" stroke="url(#navG1)" stroke-width="1.3"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GAME DEVELOPMENT ===== -->
+<section class="svc-detail" id="game">
+  <div class="wrap">
+    <div class="svc-detail-grid reveal">
+      <div class="svc-detail-copy">
+        <span class="num-tag">03 / Game Development</span>
+        <h2>Games built on Unity and other leading platforms</h2>
+        <p>2D and 3D games and interactive experiences built primarily on Unity, alongside other leading game-development platforms where a project calls for it, covering gameplay programming, multiplayer backends, monetisation and console/mobile store submission. A polished, well-optimised build protects retention and ratings from day one, cutting the cost of post-launch fixes and negative reviews.</p>
+        <ul class="tab-feature-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Gameplay &amp; Systems Programming</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>2D &amp; 3D Game Development</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Multiplayer &amp; Backend Integration</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>In-App Purchases &amp; Monetisation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Performance &amp; Device Optimisation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Store Submission &amp; Live-Ops</li>
+        </ul>
+        <div class="tech-badges"><span>Unity</span><span>C#</span><span>Unreal Engine</span><span>Photon</span><span>PlayFab</span><span>Mobile &amp; PC/Console</span></div>
+      </div>
+      <div class="svc-detail-visual"><svg viewBox="0 0 24 24" fill="none" stroke="url(#navG1)" stroke-width="1.3"><rect x="2" y="7" width="20" height="10" rx="5"/><line x1="7" y1="10" x2="7" y2="14"/><line x1="5" y1="12" x2="9" y2="12"/><circle cx="16" cy="10.5" r="1"/><circle cx="18" cy="13" r="1"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== UI/UX DESIGN ===== -->
+<section class="svc-detail" id="uiux">
+  <div class="wrap">
+    <div class="svc-detail-grid rev reveal">
+      <div class="svc-detail-copy">
+        <span class="num-tag">04 / UI/UX Design</span>
+        <h2>Interfaces people enjoy using</h2>
+        <p>Research-led product design, wireframes, clickable prototypes, design systems and usability testing, that shapes how an app or platform actually feels to use, not just how it looks in a mockup. Good design quietly reduces support tickets and drop-off, and a documented design system keeps every future feature visually consistent without starting from scratch.</p>
+        <ul class="tab-feature-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>UX Research &amp; User Flows</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Wireframing &amp; Prototyping</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Design Systems &amp; UI Kits</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Usability Testing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Accessibility (WCAG) Review</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Design-to-Dev Handoff</li>
+        </ul>
+        <div class="tech-badges"><span>Figma</span><span>Design Systems</span><span>Prototyping</span><span>User Testing</span><span>WCAG</span></div>
+      </div>
+      <div class="svc-detail-visual"><svg viewBox="0 0 24 24" fill="none" stroke="url(#navG1)" stroke-width="1.3"><polygon points="12 2 22 8.5 12 15 2 8.5 12 2"/><polyline points="2 15.5 12 22 22 15.5"/><polyline points="2 12 12 18.5 22 12"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DEVOPS ===== -->
+<section class="svc-detail" id="devops">
+  <div class="wrap">
+    <div class="svc-detail-grid reveal">
+      <div class="svc-detail-copy">
+        <span class="num-tag">05 / DevOps</span>
+        <h2>Ship faster, break less</h2>
+        <p>CI/CD pipelines, containerisation, infrastructure-as-code and cloud architecture that get releases out safely and often, plus monitoring so issues get caught before customers notice. Fewer manual deployment steps means fewer outages, and infrastructure that scales on demand keeps hosting costs proportional to actual usage.</p>
+        <ul class="tab-feature-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>CI/CD Pipeline Design</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Containerisation &amp; Orchestration</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Infrastructure as Code</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Cloud Architecture &amp; Cost Control</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Monitoring &amp; Observability</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Release &amp; Incident Management</li>
+        </ul>
+        <div class="tech-badges"><span>Docker</span><span>Kubernetes</span><span>AWS</span><span>Azure</span><span>Terraform</span><span>GitHub Actions</span></div>
+      </div>
+      <div class="svc-detail-visual"><svg viewBox="0 0 24 24" fill="none" stroke="url(#navG1)" stroke-width="1.3"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AI / MACHINE LEARNING ===== -->
+<section class="svc-detail" id="ai">
+  <div class="wrap">
+    <div class="svc-detail-grid rev reveal">
+      <div class="svc-detail-copy">
+        <span class="num-tag">06 / AI &amp; Machine Learning</span>
+        <h2>Practical AI that moves the numbers</h2>
+        <p>Computer vision, NLP, recommendation engines and workflow automation, integrated into existing products rather than built as a standalone experiment. Automating repetitive decisions and surfacing better recommendations turns AI from a buzzword into measurable time and cost savings, exactly the approach we took building Facebloom's facial analysis engine.</p>
+        <ul class="tab-feature-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Computer Vision &amp; Face Detection</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Natural Language Processing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Recommendation Engines</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>LLM &amp; Chatbot Integration</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Workflow &amp; Process Automation</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Model Integration &amp; MLOps</li>
+        </ul>
+        <div class="tech-badges"><span>Python</span><span>TensorFlow</span><span>PyTorch</span><span>OpenCV</span><span>LLM APIs</span></div>
+      </div>
+      <div class="svc-detail-visual"><svg viewBox="0 0 24 24" fill="none" stroke="url(#navG1)" stroke-width="1.3"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BLOCKCHAIN DEVELOPMENT ===== -->
+<section class="svc-detail" id="blockchain">
+  <div class="wrap">
+    <div class="svc-detail-grid reveal">
+      <div class="svc-detail-copy">
+        <span class="num-tag">07 / Blockchain Development</span>
+        <h2>Decentralised systems built to last</h2>
+        <p>Smart contracts, decentralised applications and wallet or token integrations, built with security-first practices and tested thoroughly before anything touches mainnet. Transparent, tamper-resistant systems build trust with users and partners in ways a traditional database can't replicate.</p>
+        <ul class="tab-feature-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Smart Contract Development</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Decentralised Applications (dApps)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Wallet &amp; Token Integration</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>NFT &amp; Token Standards</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Security-First Contract Design</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Pre-Launch Code Review</li>
+        </ul>
+        <div class="tech-badges"><span>Solidity</span><span>Ethereum</span><span>Web3.js</span><span>Smart Contracts</span><span>Token Standards</span></div>
+      </div>
+      <div class="svc-detail-visual"><svg viewBox="0 0 24 24" fill="none" stroke="url(#navG1)" stroke-width="1.3"><rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="15" y="2" width="7" height="7" rx="1.5"/><rect x="2" y="15" width="7" height="7" rx="1.5"/><rect x="15" y="15" width="7" height="7" rx="1.5"/><line x1="9" y1="5.5" x2="15" y2="5.5"/><line x1="5.5" y1="9" x2="5.5" y2="15"/><line x1="18.5" y1="9" x2="18.5" y2="15"/><line x1="9" y1="18.5" x2="15" y2="18.5"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QA / SOFTWARE TESTING ===== -->
+<section class="svc-detail" id="qa">
+  <div class="wrap">
+    <div class="svc-detail-grid rev reveal">
+      <div class="svc-detail-copy">
+        <span class="num-tag">08 / Quality Assurance &amp; Software Testing</span>
+        <h2>Confidence before every release</h2>
+        <p>Manual and automated testing across web, mobile and backend, including regression suites, performance testing and security checks, built into the release process rather than bolted on at the end. Catching defects before release protects customer trust and avoids the far higher cost of fixing bugs once they're already in production.</p>
+        <ul class="tab-feature-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Automated Regression Testing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Manual &amp; Exploratory QA</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Performance &amp; Load Testing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Cross-Device &amp; Cross-Browser QA</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>API &amp; Security Testing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Release Sign-Off &amp; Reporting</li>
+        </ul>
+        <div class="tech-badges"><span>Selenium</span><span>Cypress</span><span>Jest</span><span>Postman</span><span>Load Testing</span></div>
+      </div>
+      <div class="svc-detail-visual"><svg viewBox="0 0 24 24" fill="none" stroke="url(#navG1)" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="8 12 11 15 16 9"/></svg></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="section-tight" style="border-top:1px solid var(--border);">
+  <div class="wrap">
+    <div class="consult-banner reveal">
+      <div>
+        <h2 class="suffix">Not sure which service you need?</h2>
+        <p>Tell us what you're trying to solve and we'll recommend the right starting point, no obligation.</p>
+      </div>
+      <a href="contact.html" class="btn btn-primary suffix">Book a Consultation</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <svg viewBox="0 0 140 140" width="28" height="28"><polygon points="70,4 128,38 128,106 70,140 12,106 12,38" fill="none" stroke="url(#navG1)" stroke-width="7"/><path d="M35,45 L70,72 L105,45" fill="none" stroke="url(#navG2)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M35,99 L70,72 L105,99" fill="none" stroke="url(#navG1)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Tech<span class="grad-text">Monx</span>
+        </a>
+        <p>Glasgow-based IT, cybersecurity, CRM, web, app and SaaS development for local and international clients.</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/profile.php?id=61591851883211" target="_blank" rel="noopener">Facebook <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+          <a href="https://www.instagram.com/techmonx.123?igsh=MTl4OW1ndnNkOG55bw%3D%3D&utm_source=qr" target="_blank" rel="noopener">Instagram <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+          <a href="https://www.linkedin.com/company/techmonx/" target="_blank" rel="noopener">LinkedIn <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+          <a href="https://x.com/techmonx123?s=11" target="_blank" rel="noopener">X (Twitter) <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Services</h5>
+        <a href="services.html#web">Web Development</a>
+        <a href="services.html#mobile">Mobile App Development</a>
+        <a href="services.html#game">Game Development</a>
+        <a href="services.html#uiux">UI/UX Design</a>
+        <a href="services.html#devops">DevOps</a>
+        <a href="services.html#ai">AI &amp; Machine Learning</a>
+        <a href="services.html#blockchain">Blockchain Development</a>
+        <a href="services.html#qa">QA &amp; Testing</a>
+      </div>
+      <div class="footer-col"><h5>Company</h5>
+        <a href="about.html">About Us</a>
+        <a href="about.html#team">Leadership</a>
+        <a href="portfolio.html">Our Work</a>
+        <a href="careers.html">Careers</a>
+        <a href="blog.html">Blog</a>
+        <a href="testimonials.html">Testimonials</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col"><h5>Contact</h5>
+        <span>128 West George Street, Glasgow, G2 2LB, UK</span>
+        <a href="tel:+441411234567">+44 141 123 4567</a>
+        <a href="tel:+447478699355"><img src="uk-flag.svg" alt="UK" style="width:16px;height:11px;border-radius:2px;"> +44 7478 699355</a>
+        <a href="mailto:hello@techmonx.co.uk">hello@techmonx.co.uk</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 TechMonx Ltd. All rights reserved. Registered in Scotland.</span>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<div class="back-to-top" id="backToTop"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></div>
+
+
+<!-- ===== FLOATING AI ASSISTANT + BOOKING ===== -->
+<div class="float-stack">
+  <button class="fab fab-book" id="bookFab" aria-label="Book a meeting" aria-haspopup="dialog">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span class="fab-label">Book a Meeting</span>
+  </button>
+  <button class="fab fab-chat" id="chatFab" aria-label="Open AI assistant chat" aria-haspopup="dialog">
+    <svg class="ic-chat" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    <svg class="ic-close" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</div>
+
+<!-- ---- Chat panel ---- -->
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="TechMonx assistant" aria-hidden="true">
+  <div class="chat-head">
+    <div class="chat-head-id">
+      <div class="chat-avatar"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div><strong>TechMonx Assistant</strong><span>Usually replies within a few hours</span></div>
+    </div>
+    <button class="chat-panel-close" id="chatPanelClose" aria-label="Close chat">&#10005;</button>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <div class="chat-msg bot">Hi! I'm the TechMonx assistant. Tell me a bit about your project or question and a member of the team will follow up by email.</div>
+  </div>
+  <form class="chat-form" id="chatForm">
+    <input type="email" id="chatEmail" placeholder="Your email" required>
+    <textarea id="chatMessage" placeholder="How can we help?" rows="2" required></textarea>
+    <div class="chat-form-row">
+      <button type="submit" class="btn btn-primary btn-sm suffix" style="width:100%; justify-content:center;">Send Message</button>
+    </div>
+    <a href="#" class="chat-book-link" id="chatBookLink">Prefer to talk live? Book a meeting instead &rarr;</a>
+  </form>
+</div>
+
+<!-- ---- Booking modal ---- -->
+<div class="modal-overlay" id="bookModal">
+  <div class="modal-panel" style="max-width:520px;">
+    <button class="modal-close" id="bookModalClose" aria-label="Close">&#10005;</button>
+    <div class="modal-body" style="padding:38px 34px;">
+      <span class="port-tag" style="position:static; display:inline-block; margin-bottom:14px;">Book a Meeting</span>
+      <h3 style="font-size:21px; margin-bottom:10px;">Request a time to talk</h3>
+      <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">Share a few details and your preferred slot &mdash; we'll confirm by email within one business day.</p>
+      <form id="bookForm">
+        <div class="form-row">
+          <div class="form-group"><label for="bkName">Name</label><input type="text" id="bkName" required></div>
+          <div class="form-group"><label for="bkEmail">Email</label><input type="email" id="bkEmail" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="bkDate">Preferred Date</label><input type="date" id="bkDate" required></div>
+          <div class="form-group"><label for="bkTime">Preferred Time</label><input type="time" id="bkTime" required></div>
+        </div>
+        <div class="form-group"><label for="bkNotes">What would you like to discuss?</label><textarea id="bkNotes" rows="3"></textarea></div>
+        <button type="submit" class="btn btn-primary suffix" style="width:100%; justify-content:center; margin-top:6px;">Request Meeting</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

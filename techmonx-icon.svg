@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <linearGradient id="icGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5B8CFF"/>
+      <stop offset="50%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#D946EF"/>
+    </linearGradient>
+    <linearGradient id="icGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7CF2E0"/>
+      <stop offset="100%" stop-color="#5B8CFF"/>
+    </linearGradient>
+  </defs>
+  <rect width="160" height="160" rx="32" fill="#0B0F1A"/>
+  <g transform="translate(15,10)">
+    <polygon points="70,4 128,38 128,106 70,140 12,106 12,38"
+             fill="none" stroke="url(#icGrad1)" stroke-width="6"/>
+    <path d="M35,45 L70,72 L105,45" fill="none" stroke="url(#icGrad2)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M35,99 L70,72 L105,99" fill="none" stroke="url(#icGrad1)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="70" cy="72" r="8" fill="#0B0F1A"/>
+    <circle cx="70" cy="72" r="8" fill="none" stroke="url(#icGrad2)" stroke-width="3.5"/>
+    <circle cx="35" cy="45" r="5" fill="url(#icGrad2)"/>
+    <circle cx="105" cy="45" r="5" fill="url(#icGrad2)"/>
+    <circle cx="35" cy="99" r="5" fill="url(#icGrad1)"/>
+    <circle cx="105" cy="99" r="5" fill="url(#icGrad1)"/>
+  </g>
+</svg>
