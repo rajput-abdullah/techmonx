@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Canonical domain: redirect www to apex (techmonx.co.uk)
+RewriteCond %{HTTP_HOST} ^www\.techmonx\.co\.uk$ [NC]
+  RewriteRule ^(.*)$ https://techmonx.co.uk/$1 [L,R=301]
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
