@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
       msgEl.value = '';
       var subject = encodeURIComponent('New enquiry via TechMonx site chat');
       var body = encodeURIComponent(msg + '\n\nReply to: ' + emailEl.value);
-      window.open('mailto:hello@techmonx.co.uk?subject=' + subject + '&body=' + body, '_blank');
+      window.open('mailto:info@techmonx.co.uk?subject=' + subject + '&body=' + body, '_blank');
     });
   }
 
@@ -296,7 +296,7 @@ document.addEventListener('DOMContentLoaded', function () {
       var notes = document.getElementById('bkNotes').value;
       var subject = encodeURIComponent('Meeting request from ' + name);
       var body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nPreferred date: ' + date + '\nPreferred time: ' + time + '\nNotes: ' + notes);
-      window.open('mailto:hello@techmonx.co.uk?subject=' + subject + '&body=' + body, '_blank');
+      window.open('mailto:info@techmonx.co.uk?subject=' + subject + '&body=' + body, '_blank');
       setTimeout(closeBooking, 1400);
     });
   }
