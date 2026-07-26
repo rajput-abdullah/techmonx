@@ -5,10 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portfolio | TechMonx — Real Apps We've Built</title>
 <meta name="description" content="See TechMonx's portfolio: real apps and platforms including Facebloom, Calling All Kids, BUFF, FitCoin, Church Service Hub, Bibo and Forun.">
+<link rel="canonical" href="https://techmonx.co.uk/portfolio.html">
 <link rel="icon" href="techmonx-icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "@id": "https://techmonx.co.uk/#organization", "name": "TechMonx", "url": "https://techmonx.co.uk/", "logo": "https://techmonx.co.uk/techmonx-icon.svg", "image": "https://techmonx.co.uk/techmonx-icon.svg", "description": "TechMonx is a Glasgow, UK based technology studio building apps, websites, CRMs, SaaS products, and Windows/Mac software, plus IT support and cybersecurity for local and international clients.", "address": {"@type": "PostalAddress", "streetAddress": "128 West George Street", "addressLocality": "Glasgow", "postalCode": "G2 2LB", "addressCountry": "GB"}, "telephone": "+447478699355", "email": "info@techmonx.co.uk", "priceRange": "££", "sameAs": ["https://www.facebook.com/profile.php?id=61591851883211", "https://www.instagram.com/techmonx.123", "https://www.linkedin.com/company/techmonx/", "https://x.com/techmonx123"], "areaServed": ["GB", "US", "EU"], "openingHoursSpecification": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "18:00"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://techmonx.co.uk/index.html"}, {"@type": "ListItem", "position": 2, "name": "Portfolio", "item": "https://techmonx.co.uk/portfolio.html"}]}</script>
 </head>
 <body>
 
@@ -231,6 +234,9 @@
         <a href="services.html">Services</a>
         <a href="portfolio.html">Portfolio</a>
         <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="cookie-policy.html">Cookie Policy</a>
       </nav>
     </div>
   </div>
@@ -263,9 +269,11 @@
   <div class="chat-body" id="chatBody">
     <div class="chat-msg bot">Hi! I'm the TechMonx assistant. Tell me a bit about your project or question and a member of the team will follow up by email.</div>
   </div>
-  <form class="chat-form" id="chatForm">
-    <input type="email" id="chatEmail" placeholder="Your email" required>
-    <textarea id="chatMessage" placeholder="How can we help?" rows="2" required></textarea>
+  <form class="chat-form" id="chatForm" method="POST" action="contact-handler.php" novalidate>
+    <input type="hidden" name="form_type" value="chat">
+    <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px;" aria-hidden="true">
+    <input type="email" id="chatEmail" name="email" placeholder="Your email" required>
+    <textarea id="chatMessage" name="message" placeholder="How can we help?" rows="2" required></textarea>
     <div class="chat-form-row">
       <button type="submit" class="btn btn-primary btn-sm suffix" style="width:100%; justify-content:center;">Send Message</button>
     </div>
@@ -281,16 +289,19 @@
       <span class="port-tag" style="position:static; display:inline-block; margin-bottom:14px;">Book a Meeting</span>
       <h3 style="font-size:21px; margin-bottom:10px;">Request a time to talk</h3>
       <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">Share a few details and your preferred slot &mdash; we'll confirm by email within one business day.</p>
-      <form id="bookForm">
+      <form id="bookForm" method="POST" action="contact-handler.php" novalidate>
+        <input type="hidden" name="form_type" value="booking">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px;" aria-hidden="true">
         <div class="form-row">
-          <div class="form-group"><label for="bkName">Name</label><input type="text" id="bkName" required></div>
-          <div class="form-group"><label for="bkEmail">Email</label><input type="email" id="bkEmail" required></div>
+          <div class="form-group"><label for="bkName">Name</label><input type="text" id="bkName" name="name" required></div>
+          <div class="form-group"><label for="bkEmail">Email</label><input type="email" id="bkEmail" name="email" required></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label for="bkDate">Preferred Date</label><input type="date" id="bkDate" required></div>
-          <div class="form-group"><label for="bkTime">Preferred Time</label><input type="time" id="bkTime" required></div>
+          <div class="form-group"><label for="bkDate">Preferred Date</label><input type="date" id="bkDate" name="date" required></div>
+          <div class="form-group"><label for="bkTime">Preferred Time</label><input type="time" id="bkTime" name="time" required></div>
         </div>
-        <div class="form-group"><label for="bkNotes">What would you like to discuss?</label><textarea id="bkNotes" rows="3"></textarea></div>
+        <div class="form-group"><label for="bkNotes">What would you like to discuss?</label><textarea id="bkNotes" name="notes" rows="3"></textarea></div>
+        <div class="form-status" id="bookFormStatus" role="status" aria-live="polite" style="font-size:13px; margin-top:-6px; margin-bottom:4px; min-height:0;"></div>
         <button type="submit" class="btn btn-primary suffix" style="width:100%; justify-content:center; margin-top:6px;">Request Meeting</button>
       </form>
     </div>
