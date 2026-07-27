@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ---------- scroll reveal ---------- */
-  var revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  /* ---------- scroll reveal (cinematic: fade/slide/scale/line variants) ---------- */
+  var revealEls = document.querySelectorAll('.reveal, .reveal-stagger, .reveal-left, .reveal-right, .reveal-scale, .reveal-line');
   if ('IntersectionObserver' in window && revealEls.length) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -40,6 +40,58 @@ document.addEventListener('DOMContentLoaded', function () {
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* ---------- scroll-linked parallax (hardware-accelerated, mobile/reduced-motion safe) ---------- */
+  var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var parallaxEls = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
+  if (parallaxEls.length && !prefersReducedMotion) {
+    var parallaxTicking = false;
+    function isMobileViewport() { return window.innerWidth <= 768; }
+    function updateParallax() {
+      parallaxTicking = false;
+      if (isMobileViewport()) return;
+      var vh = window.innerHeight;
+      parallaxEls.forEach(function (el) {
+        var rect = el.getBoundingClientRect();
+        // only animate elements roughly within/near the viewport
+        if (rect.bottom < -200 || rect.top > vh + 200) return;
+        var speed = parseFloat(el.getAttribute('data-parallax-speed')) || 0.15;
+        var offset = (rect.top - vh / 2) * speed * -1;
+        el.style.setProperty('--py', offset.toFixed(1) + 'px');
+      });
+    }
+    function requestParallaxTick() {
+      if (!parallaxTicking) {
+        parallaxTicking = true;
+        window.requestAnimationFrame(updateParallax);
+      }
+    }
+    window.addEventListener('scroll', requestParallaxTick, { passive: true });
+    window.addEventListener('resize', requestParallaxTick);
+    updateParallax();
+  }
+
+  /* ---------- energetic hover micro-interactions (desktop pointer only) ---------- */
+  var supportsHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (supportsHover && !prefersReducedMotion) {
+    var tiltTargets = document.querySelectorAll('.svc-card, .port-card, .blog-card, .testi-card, .value-card, .engage-card');
+    tiltTargets.forEach(function (card) {
+      card.classList.add('tilt-card');
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var px = (e.clientX - rect.left) / rect.width - 0.5;
+        var py = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.setProperty('--tiltX', (py * -6).toFixed(2) + 'deg');
+        card.style.setProperty('--tiltY', (px * 6).toFixed(2) + 'deg');
+        card.style.setProperty('--tiltLift', '-4px');
+      });
+      card.addEventListener('mouseleave', function () {
+        card.style.setProperty('--tiltX', '0deg');
+        card.style.setProperty('--tiltY', '0deg');
+        card.style.setProperty('--tiltLift', '0px');
+      });
+    });
   }
 
   /* ---------- counters ---------- */
@@ -195,13 +247,136 @@ document.addEventListener('DOMContentLoaded', function () {
     resetTimer();
   }
 
-  /* ---------- contact form (demo submit) ---------- */
+  /* ---------- who-we-are image slider ---------- */
+  var whoSlider = document.getElementById('whoSlider');
+  if (whoSlider) {
+    var wSlides = whoSlider.querySelectorAll('.who-slide');
+    var wDotsWrap = document.getElementById('whoDots');
+    var wCurrent = 0;
+    var wTimer;
+    var wReduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    wSlides.forEach(function (_, i) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'who-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-label', 'Show image ' + (i + 1) + ' of ' + wSlides.length);
+      dot.addEventListener('click', function () { wGoTo(i); });
+      wDotsWrap.appendChild(dot);
+    });
+    var wDots = wDotsWrap.querySelectorAll('.who-dot');
+
+    function wGoTo(i) {
+      wSlides[wCurrent].classList.remove('active');
+      wDots[wCurrent].classList.remove('active');
+      wCurrent = (i + wSlides.length) % wSlides.length;
+      wSlides[wCurrent].classList.add('active');
+      wDots[wCurrent].classList.add('active');
+      wResetTimer();
+    }
+    function wNext() { wGoTo(wCurrent + 1); }
+    function wPrev() { wGoTo(wCurrent - 1); }
+    function wResetTimer() {
+      clearInterval(wTimer);
+      if (!wReduceMotion) wTimer = setInterval(wNext, 5500);
+    }
+    var wNextBtn = document.getElementById('whoNext');
+    var wPrevBtn = document.getElementById('whoPrev');
+    if (wNextBtn) wNextBtn.addEventListener('click', wNext);
+    if (wPrevBtn) wPrevBtn.addEventListener('click', wPrev);
+
+    /* keyboard support */
+    whoSlider.setAttribute('tabindex', '0');
+    whoSlider.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { wNext(); }
+      else if (e.key === 'ArrowLeft') { wPrev(); }
+    });
+
+    /* touch / swipe support */
+    var wTouchStartX = 0, wTouchDeltaX = 0;
+    whoSlider.addEventListener('touchstart', function (e) {
+      wTouchStartX = e.touches[0].clientX;
+      wTouchDeltaX = 0;
+      clearInterval(wTimer);
+    }, { passive: true });
+    whoSlider.addEventListener('touchmove', function (e) {
+      wTouchDeltaX = e.touches[0].clientX - wTouchStartX;
+    }, { passive: true });
+    whoSlider.addEventListener('touchend', function () {
+      if (Math.abs(wTouchDeltaX) > 40) {
+        if (wTouchDeltaX < 0) wNext(); else wPrev();
+      } else {
+        wResetTimer();
+      }
+    });
+
+    /* pause on hover / keyboard focus */
+    whoSlider.addEventListener('mouseenter', function () { clearInterval(wTimer); });
+    whoSlider.addEventListener('mouseleave', function () { wResetTimer(); });
+    whoSlider.addEventListener('focusin', function () { clearInterval(wTimer); });
+    whoSlider.addEventListener('focusout', function () { wResetTimer(); });
+
+    wResetTimer();
+  }
+
+  /* ---------- shared form submit helper ---------- */
+  function submitForm(form, opts) {
+    opts = opts || {};
+    var data = new FormData(form);
+    var email = data.get('email') || '';
+    return fetch(form.getAttribute('action'), {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    }).then(function (res) {
+      return res.json().catch(function () { return { ok: res.ok }; }).then(function (json) {
+        if (!res.ok || json.ok === false) {
+          throw new Error(json.error || 'Something went wrong.');
+        }
+        return json;
+      });
+    }).catch(function (err) {
+      // Network/server issue (e.g. PHP mail unavailable) — fall back to a pre-filled mailto
+      // so the enquiry still reaches info@techmonx.co.uk.
+      if (opts.mailtoSubject) {
+        var subject = encodeURIComponent(opts.mailtoSubject);
+        var body = encodeURIComponent(opts.mailtoBody || '');
+        window.open('mailto:info@techmonx.co.uk?subject=' + subject + '&body=' + body, '_blank');
+      }
+      throw err;
+    });
+  }
+
+  /* ---------- contact form ---------- */
   var miniForm = document.getElementById('miniForm');
   if (miniForm) {
+    var miniStatus = document.getElementById('miniFormStatus');
     miniForm.addEventListener('submit', function (e) {
       e.preventDefault();
       var btn = miniForm.querySelector('button[type="submit"]');
-      if (btn) btn.textContent = 'Message Sent ✓';
+      var first = miniForm.querySelector('[name="first_name"]').value.trim();
+      var last = miniForm.querySelector('[name="last_name"]').value.trim();
+      var email = miniForm.querySelector('[name="email"]').value.trim();
+      if (!first || !last || !email) {
+        if (miniStatus) { miniStatus.textContent = 'Please fill in your name and email.'; miniStatus.style.color = 'var(--pink, #D946EF)'; }
+        return;
+      }
+      var service = miniForm.querySelector('[name="service"]').value;
+      var details = miniForm.querySelector('[name="details"]').value.trim();
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      if (miniStatus) { miniStatus.textContent = ''; }
+      submitForm(miniForm, {
+        mailtoSubject: 'New enquiry from ' + first + ' ' + last + (service ? ' — ' + service : ''),
+        mailtoBody: 'Name: ' + first + ' ' + last + '\nEmail: ' + email + '\nService: ' + service + '\n\n' + details
+      }).then(function () {
+        if (btn) btn.textContent = 'Message Sent ✓';
+        if (miniStatus) { miniStatus.style.color = 'var(--teal, #38E8D4)'; miniStatus.textContent = "Thanks — we've received your message and will reply within one business day."; }
+        miniForm.reset();
+      }).catch(function () {
+        if (btn) { btn.disabled = false; btn.textContent = 'Send Message'; }
+        if (miniStatus) { miniStatus.style.color = 'var(--pink, #D946EF)'; miniStatus.textContent = "We couldn't send that automatically, so we've opened an email for you — please hit send there, or email info@techmonx.co.uk directly."; }
+      });
     });
   }
 
@@ -240,20 +415,30 @@ document.addEventListener('DOMContentLoaded', function () {
       var msgEl = document.getElementById('chatMessage');
       var emailEl = document.getElementById('chatEmail');
       var msg = msgEl.value.trim();
-      if (!msg) return;
+      var email = emailEl.value.trim();
+      if (!msg || !email) return;
       var userBubble = document.createElement('div');
       userBubble.className = 'chat-msg user';
       userBubble.textContent = msg;
       chatBody.appendChild(userBubble);
-      var botBubble = document.createElement('div');
-      botBubble.className = 'chat-msg bot';
-      botBubble.textContent = 'Thanks! We\'ve logged your message and someone from the TechMonx team will reply to ' + (emailEl.value || 'your email') + ' shortly.';
-      chatBody.appendChild(botBubble);
       chatBody.scrollTop = chatBody.scrollHeight;
       msgEl.value = '';
-      var subject = encodeURIComponent('New enquiry via TechMonx site chat');
-      var body = encodeURIComponent(msg + '\n\nReply to: ' + emailEl.value);
-      window.open('mailto:hello@techmonx.co.uk?subject=' + subject + '&body=' + body, '_blank');
+      submitForm(chatForm, {
+        mailtoSubject: 'New enquiry via TechMonx site chat',
+        mailtoBody: msg + '\n\nReply to: ' + email
+      }).then(function () {
+        var botBubble = document.createElement('div');
+        botBubble.className = 'chat-msg bot';
+        botBubble.textContent = 'Thanks! We\'ve logged your message and someone from the TechMonx team will reply to ' + email + ' shortly.';
+        chatBody.appendChild(botBubble);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }).catch(function () {
+        var botBubble = document.createElement('div');
+        botBubble.className = 'chat-msg bot';
+        botBubble.textContent = "We couldn't send that automatically, so we've opened an email for you, please hit send there so we get your message.";
+        chatBody.appendChild(botBubble);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      });
     });
   }
 
@@ -285,19 +470,28 @@ document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBooking(); });
   }
   if (bookForm) {
+    var bookStatus = document.getElementById('bookFormStatus');
     bookForm.addEventListener('submit', function (e) {
       e.preventDefault();
       var btn = bookForm.querySelector('button[type="submit"]');
-      if (btn) btn.textContent = 'Request Sent ✓';
-      var name = document.getElementById('bkName').value;
-      var email = document.getElementById('bkEmail').value;
+      var name = document.getElementById('bkName').value.trim();
+      var email = document.getElementById('bkEmail').value.trim();
       var date = document.getElementById('bkDate').value;
       var time = document.getElementById('bkTime').value;
-      var notes = document.getElementById('bkNotes').value;
-      var subject = encodeURIComponent('Meeting request from ' + name);
-      var body = encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nPreferred date: ' + date + '\nPreferred time: ' + time + '\nNotes: ' + notes);
-      window.open('mailto:hello@techmonx.co.uk?subject=' + subject + '&body=' + body, '_blank');
-      setTimeout(closeBooking, 1400);
+      var notes = document.getElementById('bkNotes').value.trim();
+      if (!name || !email || !date || !time) return;
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      if (bookStatus) bookStatus.textContent = '';
+      submitForm(bookForm, {
+        mailtoSubject: 'Meeting request from ' + name,
+        mailtoBody: 'Name: ' + name + '\nEmail: ' + email + '\nPreferred date: ' + date + '\nPreferred time: ' + time + '\nNotes: ' + notes
+      }).then(function () {
+        if (btn) btn.textContent = 'Request Sent ✓';
+        setTimeout(closeBooking, 1400);
+      }).catch(function () {
+        if (btn) { btn.disabled = false; btn.textContent = 'Request Meeting'; }
+        if (bookStatus) { bookStatus.style.color = 'var(--pink, #D946EF)'; bookStatus.textContent = "We couldn't send that automatically, so we've opened an email for you, please hit send there."; }
+      });
     });
   }
 });

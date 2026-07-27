@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About | TechMonx — Glasgow-Based Technology Studio</title>
 <meta name="description" content="Meet TechMonx: a Glasgow, UK based technology studio and the team behind our app, web, CRM, SaaS, IT and cybersecurity work.">
+<link rel="canonical" href="https://techmonx.co.uk/about.html">
 <link rel="icon" href="techmonx-icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -17,11 +18,54 @@
   .story-visual .pin svg{width:56px; height:56px; margin:0 auto 14px;}
   .story-visual .pin strong{font-family:'Space Grotesk'; font-size:20px; display:block;}
   .story-visual .pin span{color:var(--muted); font-size:13.5px;}
+  .story-visual.who-slider{aspect-ratio:4/3;}
+  .who-slider::after{display:none;}
+  .who-slide{position:absolute; inset:0; z-index:0; opacity:0; transition:opacity 1s ease;}
+  .who-slide.active{opacity:1;}
+  .who-slide img{width:100%; height:100%; object-fit:cover; display:block;}
+  .who-slide.pos-1 img{object-position:center 42%;}
+  .who-slide.pos-2 img{object-position:center 28%;}
+  .who-slide.pos-3 img{object-position:center 55%;}
+  .who-slider-overlay{position:absolute; inset:0; z-index:1; background:linear-gradient(160deg, rgba(6,8,13,0.78), rgba(6,8,13,0.32) 50%, rgba(6,8,13,0.85)); pointer-events:none;}
+  .who-slider .pv-orb{z-index:2;}
+  .who-slider .pin{z-index:3;}
+  .who-slider .pin strong, .who-slider .pin span{text-shadow:0 2px 10px rgba(0,0,0,0.6);}
+  .who-slider .pv-badge{z-index:3;}
+  .who-slider-arrow{position:absolute; top:50%; transform:translateY(-50%); z-index:4; width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,0.25); background:rgba(6,8,13,0.45); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .25s, border-color .25s, opacity .25s; opacity:0;}
+  .who-slider-arrow svg{width:15px; height:15px; stroke:currentColor;}
+  .who-slider-arrow.prev{left:14px;}
+  .who-slider-arrow.next{right:14px;}
+  .who-slider-arrow:hover{background:rgba(6,8,13,0.7); border-color:rgba(255,255,255,0.45);}
+  .who-slider:hover .who-slider-arrow, .who-slider:focus-within .who-slider-arrow{opacity:1;}
+  .who-slider-dots{position:absolute; left:0; right:0; bottom:14px; z-index:4; display:flex; justify-content:center; gap:7px;}
+  .who-slider-dots button{width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.4); border:none; padding:0; cursor:pointer; transition:.25s;}
+  .who-slider-dots button.active{background:#fff; width:20px; border-radius:4px;}
+  @media (max-width:768px){
+    .who-slider-arrow{width:32px; height:32px; opacity:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .who-slide{transition:none;}
+  }
   .who-stats{display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin-top:32px;}
   .who-stats .stat-card{border:1px solid var(--border); border-radius:14px; padding:20px; background:rgba(255,255,255,0.02);}
   .who-stats .num{font-family:'Space Grotesk'; font-size:28px; font-weight:700;}
   .who-stats .label{color:var(--muted); font-size:12.5px; margin-top:4px;}
+  .vision-visual{aspect-ratio:1/1; border-radius:var(--radius-lg); background:linear-gradient(155deg, rgba(139,92,246,0.16), rgba(91,140,255,0.10)); border:1px solid var(--border); position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;}
+  .story-timeline{display:flex; justify-content:space-between; gap:16px; margin:40px 0 44px; position:relative;}
+  .story-timeline::before{content:""; position:absolute; top:9px; left:0; right:0; height:1px; background:linear-gradient(90deg, rgba(91,140,255,0.5), rgba(217,70,239,0.5)); z-index:0;}
+  .story-timeline .tl-step{position:relative; z-index:1; flex:1; text-align:center; padding-top:26px;}
+  .story-timeline .tl-step::before{content:""; position:absolute; top:0; left:50%; transform:translateX(-50%); width:9px; height:9px; border-radius:50%; background:var(--bg-alt); border:2px solid #5B8CFF;}
+  .story-timeline .tl-label{font-family:'Space Grotesk'; font-size:13.5px; font-weight:600; color:var(--text);}
+  .story-timeline .tl-desc{font-size:12.5px; color:var(--muted); margin-top:5px; line-height:1.5;}
+  @media (max-width:768px){
+    .story-timeline{flex-direction:column; gap:26px;}
+    .story-timeline::before{top:0; bottom:0; left:9px; right:auto; width:1px; height:auto; background:linear-gradient(180deg, rgba(91,140,255,0.5), rgba(217,70,239,0.5));}
+    .story-timeline .tl-step{text-align:left; padding-top:0; padding-left:28px;}
+    .story-timeline .tl-step::before{top:4px; left:9px;}
+  }
 </style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "@id": "https://techmonx.co.uk/#organization", "name": "TechMonx", "url": "https://techmonx.co.uk/", "logo": "https://techmonx.co.uk/techmonx-icon.svg", "image": "https://techmonx.co.uk/techmonx-icon.svg", "description": "TechMonx is a Glasgow, UK based technology studio building apps, websites, CRMs, SaaS products, and Windows/Mac software, plus IT support and cybersecurity for local and international clients.", "address": {"@type": "PostalAddress", "streetAddress": "128 West George Street", "addressLocality": "Glasgow", "postalCode": "G2 2LB", "addressCountry": "GB"}, "telephone": "+447478699355", "email": "info@techmonx.co.uk", "priceRange": "££", "sameAs": ["https://www.facebook.com/profile.php?id=61591851883211", "https://www.instagram.com/techmonx.123", "https://www.linkedin.com/company/techmonx/", "https://x.com/techmonx123"], "areaServed": ["GB", "US", "EU"], "openingHoursSpecification": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "18:00"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://techmonx.co.uk/index.html"}, {"@type": "ListItem", "position": 2, "name": "About", "item": "https://techmonx.co.uk/about.html"}]}</script>
 </head>
 <body>
 
@@ -43,7 +87,6 @@
         <div class="nav-item"><a href="contact.html">Contact</a></div>
       </div>
       <div class="nav-right">
-        <a href="contact.html" class="btn btn-outline btn-sm">Sign In</a>
         <a href="contact.html" class="btn btn-primary btn-sm suffix">LET'S TALK</a>
         <div class="burger" id="burger"><span></span><span></span><span></span></div>
       </div>
@@ -64,12 +107,12 @@
 
 <!-- ===== PAGE HERO ===== -->
 <section class="page-hero">
-  <div class="hero-blob hb1"></div>
-  <div class="hero-blob hb2"></div>
+  <div class="hero-blob hb1" data-parallax data-parallax-speed="0.12"></div>
+  <div class="hero-blob hb2" data-parallax data-parallax-speed="0.22"></div>
   <div class="wrap">
     <div class="breadcrumb"><a href="index.html">Home</a> / About</div>
     <div class="eyebrow"><span class="dot"></span> Company</div>
-    <h1 class="suffix">A Glasgow team, a global client list</h1>
+    <h1 class="suffix">A Glasgow studio, built for global-standard work</h1>
     <p class="lead">TechMonx is a technology studio built around one idea: local accountability, delivered at a standard that holds up anywhere in the world.</p>
   </div>
 </section>
@@ -80,22 +123,73 @@
     <div class="story-grid">
       <div class="reveal">
         <div class="eyebrow"><span class="dot"></span> Who We Are</div>
-        <h2 class="suffix" style="font-size:clamp(26px,3.4vw,36px); margin-bottom:18px;">Turning creative ideas into digital realities</h2>
-        <p style="color:var(--muted); font-size:16px; margin-bottom:16px;">Founded in Glasgow, TechMonx partners with startups, SMEs and enterprises across the UK, Europe and North America. You get a Glasgow-based team you can call or meet in person, backed by engineering and security cover around the clock.</p>
-        <p style="color:var(--muted); font-size:16px;">Whether it's a new app, a CRM your sales team will actually use, a stronger IT setup, or better protection against cyber threats, we work alongside your team rather than as an outside vendor you rarely hear from.</p>
+        <h2 class="suffix" style="font-size:clamp(26px,3.4vw,36px); margin-bottom:18px;">From code to customers, built to scale</h2>
+        <p style="color:var(--muted); font-size:16px; margin-bottom:16px;">TechMonx is a Glasgow-based technology studio, founded in January 2026, building AI agents, apps, websites, CRMs and SaaS platforms, backed by practical IT support and cybersecurity. We help ambitious businesses turn ideas into reliable digital products.</p>
+        <p style="color:var(--muted); font-size:16px; margin-bottom:16px;">Our expertise spans AI automation, web development, mobile app development, UI/UX design, DevOps, game development, blockchain, and quality assurance. We work with modern technologies including React, Next.js, Swift, Flutter, AWS, and TensorFlow.</p>
+        <p style="color:var(--muted); font-size:16px;">The consumer apps in our portfolio, including FaceBloom, Calling All Kids and Church Service Hub, were built by our founder, Abdullah Shahbaz, an AI Agentic Software Engineer specialising in AI-based Flutter applications, before TechMonx was founded, and are now part of the studio's portfolio. Agile delivery, NDA and IP protection, direct communication, and post-launch support on every project.</p>
         <div class="who-stats">
-          <div class="stat-card"><div class="num grad-text">98%</div><div class="label">Client Retention Rate</div></div>
-          <div class="stat-card"><div class="num grad-text">4.9/5</div><div class="label">Average Client Rating</div></div>
-          <div class="stat-card"><div class="num grad-text">24/7</div><div class="label">Security &amp; Support</div></div>
-          <div class="stat-card"><div class="num grad-text">15+</div><div class="label">Industries Served</div></div>
+          <div class="stat-card"><div class="num grad-text">Jan 2026</div><div class="label">Studio Founded</div></div>
+          <div class="stat-card"><div class="num grad-text">2</div><div class="label">Founders</div></div>
+          <div class="stat-card"><div class="num grad-text">7</div><div class="label">Portfolio Apps Shipped</div></div>
+          <div class="stat-card"><div class="num grad-text">10</div><div class="label">Service Disciplines</div></div>
         </div>
       </div>
-      <div class="story-visual reveal">
+      <div class="story-visual who-slider reveal" id="whoSlider" role="region" aria-roledescription="carousel" aria-label="Glasgow, home of TechMonx">
+        <div class="who-slide pos-1 active">
+          <img src="glasgow-who-01-cityscape.jpg" alt="Aerial view of George Street in Glasgow, with St George's Tron Church of Scotland and the city skyline beyond" loading="eager" width="612" height="408">
+        </div>
+        <div class="who-slide pos-2">
+          <img src="glasgow-who-02-trongate.jpg" alt="Trongate street in Glasgow city centre, looking toward the Tolbooth Steeple" loading="lazy" width="523" height="382">
+        </div>
+        <div class="who-slide pos-3">
+          <img src="glasgow-who-03-the-ard.webp" alt="The Ard, a modern residential tower in Glasgow, lit at dusk" loading="lazy" width="794" height="572">
+        </div>
+        <div class="who-slider-overlay"></div>
+        <div class="pv-orb o1"></div><div class="pv-orb o2"></div>
         <div class="pin">
           <svg viewBox="0 0 24 24" fill="none" stroke="url(#navG1)" stroke-width="1.4"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <strong>Glasgow, Scotland</strong>
           <span>Headquartered in the heart of the UK's tech scene</span>
         </div>
+        <span class="pv-badge">Glasgow HQ &middot; global ambition</span>
+        <button type="button" class="who-slider-arrow prev" id="whoPrev" aria-label="Previous image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button type="button" class="who-slider-arrow next" id="whoNext" aria-label="Next image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <div class="who-slider-dots" id="whoDots" role="tablist" aria-label="Slide navigation"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OUR VISION ===== -->
+<section id="vision" style="background:var(--bg-alt); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="story-grid">
+      <div class="vision-visual reveal pv-panel">
+        <div class="pv-tex"></div>
+        <div class="pv-orb o1"></div><div class="pv-orb o2"></div>
+        <svg viewBox="0 0 240 240" fill="none" class="pv-scene" style="width:80%;" aria-hidden="true" focusable="false">
+          <circle cx="40" cy="70" r="5" fill="rgba(124,242,224,0.7)" stroke="url(#navG2)" stroke-width="1"/>
+          <circle cx="40" cy="120" r="5" fill="rgba(217,70,239,0.6)" stroke="url(#navG2)" stroke-width="1"/>
+          <circle cx="40" cy="170" r="5" fill="rgba(91,140,255,0.6)" stroke="url(#navG1)" stroke-width="1"/>
+          <line x1="45" y1="70" x2="100" y2="118" stroke="url(#navG2)" stroke-width="1" stroke-dasharray="2 5" opacity="0.55"/>
+          <line x1="45" y1="120" x2="100" y2="120" stroke="url(#navG2)" stroke-width="1" stroke-dasharray="2 5" opacity="0.55"/>
+          <line x1="45" y1="170" x2="100" y2="122" stroke="url(#navG1)" stroke-width="1" stroke-dasharray="2 5" opacity="0.55"/>
+          <circle cx="108" cy="120" r="10" fill="rgba(139,92,246,0.25)" stroke="url(#navG1)" stroke-width="1.4"/>
+          <circle cx="108" cy="120" r="4" fill="#8B5CF6"/>
+          <line x1="118" y1="120" x2="150" y2="120" stroke="url(#navG1)" stroke-width="1.4" opacity="0.7"/>
+          <rect x="150" y="55" width="66" height="130" rx="14" stroke="url(#navG2)" stroke-width="1.4" opacity="0.8"/>
+          <line x1="164" y1="70" x2="202" y2="70" stroke="url(#navG2)" stroke-width="1" opacity="0.4"/>
+          <path d="M172,110 L180,102 L172,94" stroke="url(#navG1)" stroke-width="1.4" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M194,94 L202,102 L194,110" stroke="url(#navG1)" stroke-width="1.4" opacity="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="184" y1="92" x2="180" y2="112" stroke="url(#navG2)" stroke-width="1" opacity="0.5"/>
+          <polyline points="164,150 176,138 188,146 202,128" stroke="url(#navG1)" stroke-width="1.4" opacity="0.75" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="pv-badge">AI Agents &middot; Real Software</span>
+      </div>
+      <div class="reveal">
+        <div class="eyebrow"><span class="dot"></span> Our Vision</div>
+        <h2 class="suffix" style="font-size:clamp(26px,3.4vw,36px); margin-bottom:18px;">To become a leading global partner in AI-agentic applications and intelligent software</h2>
+        <p style="color:var(--muted); font-size:16px;">Helping ambitious organisations turn complex ideas into practical, scalable digital products. TechMonx combines AI automation, agentic workflows, and high-quality software engineering to build products that create measurable value for clients around the world. From AI-powered Flutter apps to web platforms, SaaS products and business systems, our focus is on technology that is useful, reliable, and ready to scale.</p>
       </div>
     </div>
   </div>
@@ -106,14 +200,32 @@
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow"><span class="dot"></span> Our Story</div>
-      <h2 class="suffix">Evolving through craft, care and delivery</h2>
-      <p>We started as a small IT support outfit for local Glasgow businesses. Over time, clients kept asking for more: a website here, a CRM there, then a full app. So we built the team to match, without losing the accountability that got us the work in the first place.</p>
+      <h2 class="suffix">A founder's craft, built into a studio</h2>
+      <p>TechMonx was founded in January 2026 by Abdullah Shahbaz and Sami Khan. The portfolio you see across our site, AI-powered Flutter apps, web platforms and business tools, reflects work Abdullah completed as an independent AI Agentic Software Engineer before TechMonx existed. We built the studio to take that same standard of engineering and offer it more broadly, alongside IT support, cybersecurity, SaaS and CRM development.</p>
+    </div>
+    <div class="story-timeline reveal-stagger">
+      <div class="tl-step">
+        <div class="tl-label">Independent work</div>
+        <div class="tl-desc">Abdullah built AI-based Flutter apps as an independent engineer, including FaceBloom and Calling All Kids.</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-label">Studio founded</div>
+        <div class="tl-desc">TechMonx launched in January 2026 with Abdullah and Sami.</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-label">Portfolio joins the studio</div>
+        <div class="tl-desc">Prior independent projects became part of the TechMonx portfolio.</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-label">Today</div>
+        <div class="tl-desc">Expanding into IT services, SaaS/CRM and AI agent work for new clients.</div>
+      </div>
     </div>
     <div class="stats-row" data-counter-group>
-      <div class="stat-tile"><div class="num" data-count="9">0</div><div class="label">Years Running</div></div>
-      <div class="stat-tile"><div class="num" data-count="45">0</div><div class="label">Clients Served</div></div>
-      <div class="stat-tile"><div class="num" data-count="120">0</div><div class="label">Projects Delivered</div></div>
-      <div class="stat-tile"><div class="num" data-count="12">0</div><div class="label">Countries Reached</div></div>
+      <div class="stat-tile"><div class="num">2026</div><div class="label">Founded</div></div>
+      <div class="stat-tile"><div class="num" data-count="2">0</div><div class="label">Founders</div></div>
+      <div class="stat-tile"><div class="num" data-count="7">0</div><div class="label">Portfolio Apps</div></div>
+      <div class="stat-tile"><div class="num" data-count="10">0</div><div class="label">Service Disciplines</div></div>
     </div>
   </div>
 </section>
@@ -130,15 +242,15 @@
       <div class="member">
         <div class="headshot-slot"><div class="inner"><span class="initials">AS</span></div></div>
         <h4>Abdullah Shahbaz</h4>
-        <div class="role">Co-Founder</div>
-        <p class="bio">Leads engineering across TechMonx's app, web and AI projects.</p>
+        <div class="role">Founder</div>
+        <p class="bio">AI Agentic Software Engineer specialising in AI-based Flutter applications; leads engineering across TechMonx's app, web and AI projects.</p>
         <a href="https://www.linkedin.com/in/rajput-abdullah/" target="_blank" rel="noopener" class="svc-row-link" style="justify-content:center; margin-top:12px;">View LinkedIn &rarr;</a>
       </div>
       <div class="member">
         <div class="headshot-slot"><div class="inner"><span class="initials">SK</span></div></div>
         <h4>Sami Khan</h4>
-        <div class="role">CEO</div>
-        <p class="bio">Sets the direction for TechMonx and its client partnerships.</p>
+        <div class="role">Co-Founder</div>
+        <p class="bio">Co-founded TechMonx alongside Abdullah; helps set direction for the studio and its client partnerships.</p>
         <a href="https://www.linkedin.com/in/sami~khan/" target="_blank" rel="noopener" class="svc-row-link" style="justify-content:center; margin-top:12px;">View LinkedIn &rarr;</a>
       </div>
     </div>
@@ -205,14 +317,16 @@
         </div>
       </div>
       <div class="footer-col"><h5>Services</h5>
-        <a href="services.html#web">Web Development</a>
+        <a href="services.html#ai">AI Agents &amp; Automation</a>
         <a href="services.html#mobile">Mobile App Development</a>
-        <a href="services.html#game">Game Development</a>
+        <a href="services.html#web">Web Development</a>
+        <a href="services.html#it-cyber">IT Services &amp; Cybersecurity</a>
+        <a href="services.html#saas-crm">SaaS &amp; CRM Development</a>
         <a href="services.html#uiux">UI/UX Design</a>
         <a href="services.html#devops">DevOps</a>
-        <a href="services.html#ai">AI &amp; Machine Learning</a>
+        <a href="services.html#game">Game Development</a>
         <a href="services.html#blockchain">Blockchain Development</a>
-        <a href="services.html#qa">QA &amp; Testing</a>
+        <a href="services.html#qa">Quality Assurance &amp; Testing</a>
       </div>
       <div class="footer-col"><h5>Company</h5>
         <a href="about.html">About Us</a>
@@ -225,9 +339,9 @@
       </div>
       <div class="footer-col"><h5>Contact</h5>
         <span>128 West George Street, Glasgow, G2 2LB, UK</span>
-        <a href="tel:+441411234567">+44 141 123 4567</a>
         <a href="tel:+447478699355"><img src="uk-flag.svg" alt="UK" style="width:16px;height:11px;border-radius:2px;"> +44 7478 699355</a>
-        <a href="mailto:hello@techmonx.co.uk">hello@techmonx.co.uk</a>
+        <a href="tel:+447424976201"><img src="uk-flag.svg" alt="UK" style="width:16px;height:11px;border-radius:2px;"> +44 7424 976201</a>
+        <a href="mailto:info@techmonx.co.uk">info@techmonx.co.uk</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -238,6 +352,9 @@
         <a href="services.html">Services</a>
         <a href="portfolio.html">Portfolio</a>
         <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms-of-service.html">Terms of Service</a>
+        <a href="cookie-policy.html">Cookie Policy</a>
       </nav>
     </div>
   </div>
@@ -270,9 +387,11 @@
   <div class="chat-body" id="chatBody">
     <div class="chat-msg bot">Hi! I'm the TechMonx assistant. Tell me a bit about your project or question and a member of the team will follow up by email.</div>
   </div>
-  <form class="chat-form" id="chatForm">
-    <input type="email" id="chatEmail" placeholder="Your email" required>
-    <textarea id="chatMessage" placeholder="How can we help?" rows="2" required></textarea>
+  <form class="chat-form" id="chatForm" method="POST" action="contact-handler.php" novalidate>
+    <input type="hidden" name="form_type" value="chat">
+    <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px;" aria-hidden="true">
+    <input type="email" id="chatEmail" name="email" placeholder="Your email" required>
+    <textarea id="chatMessage" name="message" placeholder="How can we help?" rows="2" required></textarea>
     <div class="chat-form-row">
       <button type="submit" class="btn btn-primary btn-sm suffix" style="width:100%; justify-content:center;">Send Message</button>
     </div>
@@ -288,16 +407,19 @@
       <span class="port-tag" style="position:static; display:inline-block; margin-bottom:14px;">Book a Meeting</span>
       <h3 style="font-size:21px; margin-bottom:10px;">Request a time to talk</h3>
       <p style="color:var(--muted); font-size:14px; margin-bottom:24px;">Share a few details and your preferred slot &mdash; we'll confirm by email within one business day.</p>
-      <form id="bookForm">
+      <form id="bookForm" method="POST" action="contact-handler.php" novalidate>
+        <input type="hidden" name="form_type" value="booking">
+        <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute; left:-9999px;" aria-hidden="true">
         <div class="form-row">
-          <div class="form-group"><label for="bkName">Name</label><input type="text" id="bkName" required></div>
-          <div class="form-group"><label for="bkEmail">Email</label><input type="email" id="bkEmail" required></div>
+          <div class="form-group"><label for="bkName">Name</label><input type="text" id="bkName" name="name" required></div>
+          <div class="form-group"><label for="bkEmail">Email</label><input type="email" id="bkEmail" name="email" required></div>
         </div>
         <div class="form-row">
-          <div class="form-group"><label for="bkDate">Preferred Date</label><input type="date" id="bkDate" required></div>
-          <div class="form-group"><label for="bkTime">Preferred Time</label><input type="time" id="bkTime" required></div>
+          <div class="form-group"><label for="bkDate">Preferred Date</label><input type="date" id="bkDate" name="date" required></div>
+          <div class="form-group"><label for="bkTime">Preferred Time</label><input type="time" id="bkTime" name="time" required></div>
         </div>
-        <div class="form-group"><label for="bkNotes">What would you like to discuss?</label><textarea id="bkNotes" rows="3"></textarea></div>
+        <div class="form-group"><label for="bkNotes">What would you like to discuss?</label><textarea id="bkNotes" name="notes" rows="3"></textarea></div>
+        <div class="form-status" id="bookFormStatus" role="status" aria-live="polite" style="font-size:13px; margin-top:-6px; margin-bottom:4px; min-height:0;"></div>
         <button type="submit" class="btn btn-primary suffix" style="width:100%; justify-content:center; margin-top:6px;">Request Meeting</button>
       </form>
     </div>
