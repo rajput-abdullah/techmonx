@@ -10,6 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script src="analytics-config.js"></script>
+<script src="consent.js"></script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "@id": "https://techmonx.co.uk/#organization", "name": "TechMonx", "url": "https://techmonx.co.uk/", "logo": "https://techmonx.co.uk/techmonx-icon.svg", "image": "https://techmonx.co.uk/techmonx-icon.svg", "description": "TechMonx is a Glasgow, UK based technology studio building apps, websites, CRMs, SaaS products, and Windows/Mac software, plus IT support and cybersecurity for local and international clients.", "address": {"@type": "PostalAddress", "streetAddress": "128 West George Street", "addressLocality": "Glasgow", "postalCode": "G2 2LB", "addressCountry": "GB"}, "telephone": "+447478699355", "email": "info@techmonx.co.uk", "priceRange": "££", "sameAs": ["https://www.facebook.com/profile.php?id=61591851883211", "https://www.instagram.com/techmonx.123", "https://www.linkedin.com/company/techmonx/", "https://x.com/techmonx123"], "areaServed": ["GB", "US", "EU"], "openingHoursSpecification": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], "opens": "09:00", "closes": "18:00"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://techmonx.co.uk/index.html"}, {"@type": "ListItem", "position": 2, "name": "Portfolio", "item": "https://techmonx.co.uk/portfolio.html"}, {"@type": "ListItem", "position": 3, "name": "Calling All Kids", "item": "https://techmonx.co.uk/project-calling-all-kids.html"}]}</script>
 </head>
@@ -180,6 +182,7 @@
         <a href="privacy-policy.html">Privacy Policy</a>
         <a href="terms-of-service.html">Terms of Service</a>
         <a href="cookie-policy.html">Cookie Policy</a>
+        <a href="#" class="js-cookie-settings">Cookie Settings</a>
       </nav>
     </div>
   </div>
@@ -247,6 +250,54 @@
         <div class="form-status" id="bookFormStatus" role="status" aria-live="polite" style="font-size:13px; margin-top:-6px; margin-bottom:4px; min-height:0;"></div>
         <button type="submit" class="btn btn-primary suffix" style="width:100%; justify-content:center; margin-top:6px;">Request Meeting</button>
       </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== COOKIE CONSENT ===== -->
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-label="Cookie consent" aria-live="polite">
+  <p>We use strictly necessary storage to run this site, and — only with your consent — analytics cookies to understand how visitors use it. Read our <a href="cookie-policy.html">Cookie Policy</a> for details.</p>
+  <div class="cookie-banner-actions">
+    <button type="button" class="cookie-btn-accept" id="cookieAcceptAll">Accept all</button>
+    <button type="button" class="cookie-btn-reject" id="cookieRejectNonEssential">Reject non-essential</button>
+    <button type="button" class="cookie-btn-manage" id="cookieManage">Manage preferences</button>
+  </div>
+</div>
+
+<div class="modal-overlay cookie-modal" id="cookieModal" role="dialog" aria-modal="true" aria-label="Cookie preferences">
+  <div class="modal-panel">
+    <button class="modal-close" id="cookieModalClose" aria-label="Close">&#10005;</button>
+    <div class="cookie-modal-body">
+      <h3>Cookie preferences</h3>
+      <p>Choose which cookies TechMonx can use on this device. You can change this at any time via the "Cookie Settings" link in the footer. See our <a href="cookie-policy.html">Cookie Policy</a> and <a href="privacy-policy.html">Privacy Policy</a> for full details.</p>
+
+      <div class="cookie-pref-row">
+        <div class="cookie-pref-copy">
+          <h5>Strictly necessary</h5>
+          <p>Required for the site to function (e.g. remembering your cookie choice). Always on.</p>
+        </div>
+        <label class="cookie-pref-toggle">
+          <input type="checkbox" checked disabled aria-label="Strictly necessary (always on)">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="cookie-pref-row">
+        <div class="cookie-pref-copy">
+          <h5>Analytics</h5>
+          <p>Helps us understand how visitors use the site (Google Analytics 4) so we can improve it. Off until you opt in.</p>
+        </div>
+        <label class="cookie-pref-toggle">
+          <input type="checkbox" id="cookieToggleAnalytics" aria-label="Analytics cookies">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="cookie-modal-actions">
+        <button type="button" class="cookie-btn-accept" id="cookieModalAcceptAll">Accept all</button>
+        <button type="button" class="cookie-btn-save" id="cookieModalSave">Save preferences</button>
+      </div>
     </div>
   </div>
 </div>

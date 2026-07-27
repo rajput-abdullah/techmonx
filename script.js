@@ -372,6 +372,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }).then(function () {
         if (btn) btn.textContent = 'Message Sent ✓';
         if (miniStatus) { miniStatus.style.color = 'var(--teal, #38E8D4)'; miniStatus.textContent = "Thanks — we've received your message and will reply within one business day."; }
+        if (window.techmonxTrack) window.techmonxTrack('contact_form_submit', { service: service || 'unspecified' });
         miniForm.reset();
       }).catch(function () {
         if (btn) { btn.disabled = false; btn.textContent = 'Send Message'; }
@@ -432,6 +433,7 @@ document.addEventListener('DOMContentLoaded', function () {
         botBubble.textContent = 'Thanks! We\'ve logged your message and someone from the TechMonx team will reply to ' + email + ' shortly.';
         chatBody.appendChild(botBubble);
         chatBody.scrollTop = chatBody.scrollHeight;
+        if (window.techmonxTrack) window.techmonxTrack('chat_message_submit', {});
       }).catch(function () {
         var botBubble = document.createElement('div');
         botBubble.className = 'chat-msg bot';
@@ -453,6 +455,7 @@ document.addEventListener('DOMContentLoaded', function () {
     bookModal.classList.add('open');
     document.body.style.overflow = 'hidden';
     if (chatPanel && chatPanel.classList.contains('open')) closeChat();
+    if (window.techmonxTrack) window.techmonxTrack('booking_open_click', { page_path: window.location.pathname });
   }
   function closeBooking() {
     if (!bookModal) return;
@@ -487,6 +490,7 @@ document.addEventListener('DOMContentLoaded', function () {
         mailtoBody: 'Name: ' + name + '\nEmail: ' + email + '\nPreferred date: ' + date + '\nPreferred time: ' + time + '\nNotes: ' + notes
       }).then(function () {
         if (btn) btn.textContent = 'Request Sent ✓';
+        if (window.techmonxTrack) window.techmonxTrack('booking_request_submit', {});
         setTimeout(closeBooking, 1400);
       }).catch(function () {
         if (btn) { btn.disabled = false; btn.textContent = 'Request Meeting'; }
