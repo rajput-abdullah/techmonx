@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ---------- scroll reveal ---------- */
-  var revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  /* ---------- scroll reveal (cinematic: fade/slide/scale/line variants) ---------- */
+  var revealEls = document.querySelectorAll('.reveal, .reveal-stagger, .reveal-left, .reveal-right, .reveal-scale, .reveal-line');
   if ('IntersectionObserver' in window && revealEls.length) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -40,6 +40,58 @@ document.addEventListener('DOMContentLoaded', function () {
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* ---------- scroll-linked parallax (hardware-accelerated, mobile/reduced-motion safe) ---------- */
+  var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var parallaxEls = Array.prototype.slice.call(document.querySelectorAll('[data-parallax]'));
+  if (parallaxEls.length && !prefersReducedMotion) {
+    var parallaxTicking = false;
+    function isMobileViewport() { return window.innerWidth <= 768; }
+    function updateParallax() {
+      parallaxTicking = false;
+      if (isMobileViewport()) return;
+      var vh = window.innerHeight;
+      parallaxEls.forEach(function (el) {
+        var rect = el.getBoundingClientRect();
+        // only animate elements roughly within/near the viewport
+        if (rect.bottom < -200 || rect.top > vh + 200) return;
+        var speed = parseFloat(el.getAttribute('data-parallax-speed')) || 0.15;
+        var offset = (rect.top - vh / 2) * speed * -1;
+        el.style.setProperty('--py', offset.toFixed(1) + 'px');
+      });
+    }
+    function requestParallaxTick() {
+      if (!parallaxTicking) {
+        parallaxTicking = true;
+        window.requestAnimationFrame(updateParallax);
+      }
+    }
+    window.addEventListener('scroll', requestParallaxTick, { passive: true });
+    window.addEventListener('resize', requestParallaxTick);
+    updateParallax();
+  }
+
+  /* ---------- energetic hover micro-interactions (desktop pointer only) ---------- */
+  var supportsHover = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (supportsHover && !prefersReducedMotion) {
+    var tiltTargets = document.querySelectorAll('.svc-card, .port-card, .blog-card, .testi-card, .value-card, .engage-card');
+    tiltTargets.forEach(function (card) {
+      card.classList.add('tilt-card');
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var px = (e.clientX - rect.left) / rect.width - 0.5;
+        var py = (e.clientY - rect.top) / rect.height - 0.5;
+        card.style.setProperty('--tiltX', (py * -6).toFixed(2) + 'deg');
+        card.style.setProperty('--tiltY', (px * 6).toFixed(2) + 'deg');
+        card.style.setProperty('--tiltLift', '-4px');
+      });
+      card.addEventListener('mouseleave', function () {
+        card.style.setProperty('--tiltX', '0deg');
+        card.style.setProperty('--tiltY', '0deg');
+        card.style.setProperty('--tiltLift', '0px');
+      });
+    });
   }
 
   /* ---------- counters ---------- */
