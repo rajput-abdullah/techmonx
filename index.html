@@ -107,11 +107,22 @@
           <div class="stat-tile"><div class="num" data-count="10">0</div><div class="label">Service Disciplines</div></div>
         </div>
       </div>
-      <div class="journey-visual journey-photo-panel reveal-right">
-        <img class="journey-photo" src="https://images.unsplash.com/photo-1567961234169-21355ccf4cfa?fm=jpg&amp;q=75&amp;w=1400&amp;auto=format&amp;fit=crop" alt="Aerial view of Glasgow rooftops and city skyline" loading="lazy" width="1400" height="1050">
-        <div class="journey-photo-overlay"></div>
+      <div class="journey-visual journey-slider-panel reveal-right" id="journeySlider" role="region" aria-roledescription="carousel" aria-label="Glasgow, home of TechMonx">
+        <div class="journey-slide pos-1 active">
+          <img src="glasgow-who-01-cityscape.jpg" alt="George Street in Glasgow city centre, looking toward St George's Tron Church of Scotland" loading="eager" width="612" height="408">
+        </div>
+        <div class="journey-slide pos-2">
+          <img src="glasgow-who-02-trongate.jpg" alt="Aerial view of Glasgow city centre around St George's Tron Church, with the city skyline beyond" loading="lazy" width="523" height="382">
+        </div>
+        <div class="journey-slide pos-3">
+          <img src="glasgow-who-03-the-ard.webp" alt="The Ard, a modern residential tower in Glasgow, lit at dusk" loading="lazy" width="794" height="572">
+        </div>
+        <div class="journey-slider-overlay"></div>
         <div class="pv-orb o1"></div><div class="pv-orb o2"></div>
         <span class="pv-badge">Glasgow HQ &middot; global ambition</span>
+        <button type="button" class="journey-slider-arrow prev" id="journeyPrev" aria-label="Previous image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button type="button" class="journey-slider-arrow next" id="journeyNext" aria-label="Next image"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <div class="journey-slider-dots" id="journeyDots" role="tablist" aria-label="Slide navigation"></div>
       </div>
     </div>
   </div>

@@ -320,6 +320,79 @@ document.addEventListener('DOMContentLoaded', function () {
     wResetTimer();
   }
 
+  /* ---------- journey section image slider ---------- */
+  var journeySlider = document.getElementById('journeySlider');
+  if (journeySlider) {
+    var jSlides = journeySlider.querySelectorAll('.journey-slide');
+    var jDotsWrap = document.getElementById('journeyDots');
+    var jCurrent = 0;
+    var jTimer;
+    var jReduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    jSlides.forEach(function (_, i) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'journey-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-label', 'Show image ' + (i + 1) + ' of ' + jSlides.length);
+      dot.addEventListener('click', function () { jGoTo(i); });
+      jDotsWrap.appendChild(dot);
+    });
+    var jDots = jDotsWrap.querySelectorAll('.journey-dot');
+
+    function jGoTo(i) {
+      jSlides[jCurrent].classList.remove('active');
+      jDots[jCurrent].classList.remove('active');
+      jCurrent = (i + jSlides.length) % jSlides.length;
+      jSlides[jCurrent].classList.add('active');
+      jDots[jCurrent].classList.add('active');
+      jResetTimer();
+    }
+    function jNext() { jGoTo(jCurrent + 1); }
+    function jPrev() { jGoTo(jCurrent - 1); }
+    function jResetTimer() {
+      clearInterval(jTimer);
+      if (!jReduceMotion) jTimer = setInterval(jNext, 5500);
+    }
+    var jNextBtn = document.getElementById('journeyNext');
+    var jPrevBtn = document.getElementById('journeyPrev');
+    if (jNextBtn) jNextBtn.addEventListener('click', jNext);
+    if (jPrevBtn) jPrevBtn.addEventListener('click', jPrev);
+
+    /* keyboard support */
+    journeySlider.setAttribute('tabindex', '0');
+    journeySlider.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { jNext(); }
+      else if (e.key === 'ArrowLeft') { jPrev(); }
+    });
+
+    /* touch / swipe support */
+    var jTouchStartX = 0, jTouchDeltaX = 0;
+    journeySlider.addEventListener('touchstart', function (e) {
+      jTouchStartX = e.touches[0].clientX;
+      jTouchDeltaX = 0;
+      clearInterval(jTimer);
+    }, { passive: true });
+    journeySlider.addEventListener('touchmove', function (e) {
+      jTouchDeltaX = e.touches[0].clientX - jTouchStartX;
+    }, { passive: true });
+    journeySlider.addEventListener('touchend', function () {
+      if (Math.abs(jTouchDeltaX) > 40) {
+        if (jTouchDeltaX < 0) jNext(); else jPrev();
+      } else {
+        jResetTimer();
+      }
+    });
+
+    /* pause on hover / keyboard focus */
+    journeySlider.addEventListener('mouseenter', function () { clearInterval(jTimer); });
+    journeySlider.addEventListener('mouseleave', function () { jResetTimer(); });
+    journeySlider.addEventListener('focusin', function () { clearInterval(jTimer); });
+    journeySlider.addEventListener('focusout', function () { jResetTimer(); });
+
+    jResetTimer();
+  }
+
   /* ---------- shared form submit helper ---------- */
   function submitForm(form, opts) {
     opts = opts || {};
