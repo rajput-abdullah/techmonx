@@ -68,21 +68,27 @@ if ($formType === 'booking') {
     $replyTo = $email;
 
 } else {
-    $first   = clean($_POST['first_name'] ?? '');
-    $last    = clean($_POST['last_name'] ?? '');
-    $email   = clean($_POST['email'] ?? '');
-    $service = clean($_POST['service'] ?? '');
-    $details = clean($_POST['details'] ?? '');
+    $name     = clean($_POST['name'] ?? '');
+    $email    = clean($_POST['email'] ?? '');
+    $phone    = clean($_POST['phone'] ?? '');
+    $company  = clean($_POST['company'] ?? '');
+    $service  = clean($_POST['service'] ?? '');
+    $budget   = clean($_POST['budget'] ?? '');
+    $timeline = clean($_POST['timeline'] ?? '');
+    $details  = clean($_POST['details'] ?? '');
+    $consent  = !empty($_POST['consent']);
 
-    if ($first === '' || $last === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $service === '' || $details === '' || !$consent) {
         http_response_code(422);
-        echo json_encode(['ok' => false, 'error' => 'Please fill in all required fields.']);
+        echo json_encode(['ok' => false, 'error' => 'Please fill in all required fields and confirm you agree to be contacted.']);
         exit;
     }
 
-    $subject = "New enquiry from $first $last" . ($service ? " — $service" : '');
+    $subject = "New enquiry from $name" . ($service ? " — $service" : '');
     $body  = "New contact form submission via techmonx.co.uk\n\n";
-    $body .= "Name: $first $last\nEmail: $email\nService: $service\n\nProject details:\n$details\n";
+    $body .= "Name: $name\nEmail: $email\nPhone: " . ($phone !== '' ? $phone : 'n/a') . "\nCompany: " . ($company !== '' ? $company : 'n/a') .
+             "\nService: $service\nBudget: " . ($budget !== '' ? $budget : 'n/a') . "\nTimeline: " . ($timeline !== '' ? $timeline : 'n/a') .
+             "\n\nProject details:\n$details\n";
     $replyTo = $email;
 }
 

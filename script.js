@@ -425,23 +425,81 @@ document.addEventListener('DOMContentLoaded', function () {
   var miniForm = document.getElementById('miniForm');
   if (miniForm) {
     var miniStatus = document.getElementById('miniFormStatus');
+
+    /* preselect the "Service required" dropdown when arriving via a service-specific
+       link, e.g. /contact?service=web or /contact#lead-engine, "where technically possible" */
+    (function preselectService() {
+      var serviceSelect = miniForm.querySelector('[name="service"]');
+      if (!serviceSelect) return;
+      var raw = '';
+      try { raw = new URLSearchParams(window.location.search).get('service') || ''; } catch (err) {}
+      if (!raw && window.location.hash) raw = window.location.hash.replace('#', '');
+      if (!raw) return;
+      raw = raw.toLowerCase().trim();
+      var map = {
+        'ai': 'ai-automation', 'ai-automation': 'ai-automation', 'automation': 'ai-automation',
+        'lead-engine': 'lead-engine', 'ai-lead-engine': 'lead-engine',
+        'operations-hub': 'operations-hub', 'ai-operations-hub': 'operations-hub',
+        'support-agent': 'support-agent', 'ai-customer-support': 'support-agent', 'ai-support': 'support-agent',
+        'web': 'web', 'web-development': 'web',
+        'mobile': 'mobile', 'mobile-app-development': 'mobile', 'app': 'mobile',
+        'saas': 'saas', 'saas-development': 'saas', 'saas-crm': 'saas',
+        'crm': 'crm', 'crm-development': 'crm',
+        'it-cyber': 'it-cyber', 'it': 'it-cyber', 'cybersecurity': 'it-cyber',
+        'uiux': 'uiux', 'ui-ux': 'uiux', 'design': 'uiux',
+        'devops': 'devops',
+        'ai-ml': 'ai-ml', 'machine-learning': 'ai-ml',
+        'game': 'game', 'game-development': 'game',
+        'blockchain': 'blockchain',
+        'qa': 'qa', 'testing': 'qa',
+        'other': 'other'
+      };
+      var value = map[raw];
+      if (!value) return;
+      var opt = serviceSelect.querySelector('option[value="' + value + '"]');
+      if (opt) serviceSelect.value = value;
+    })();
+
     miniForm.addEventListener('submit', function (e) {
       e.preventDefault();
       var btn = miniForm.querySelector('button[type="submit"]');
-      var first = miniForm.querySelector('[name="first_name"]').value.trim();
-      var last = miniForm.querySelector('[name="last_name"]').value.trim();
+      var name = miniForm.querySelector('[name="name"]').value.trim();
       var email = miniForm.querySelector('[name="email"]').value.trim();
-      if (!first || !last || !email) {
+      var phone = miniForm.querySelector('[name="phone"]').value.trim();
+      var company = miniForm.querySelector('[name="company"]').value.trim();
+      var serviceEl = miniForm.querySelector('[name="service"]');
+      var service = serviceEl.value;
+      var serviceLabel = serviceEl.options[serviceEl.selectedIndex] ? serviceEl.options[serviceEl.selectedIndex].text : '';
+      var budgetEl = miniForm.querySelector('[name="budget"]');
+      var budgetLabel = budgetEl.options[budgetEl.selectedIndex] ? budgetEl.options[budgetEl.selectedIndex].text : '';
+      var timelineEl = miniForm.querySelector('[name="timeline"]');
+      var timelineLabel = timelineEl.options[timelineEl.selectedIndex] ? timelineEl.options[timelineEl.selectedIndex].text : '';
+      var details = miniForm.querySelector('[name="details"]').value.trim();
+      var consent = miniForm.querySelector('[name="consent"]');
+
+      if (!name || !email) {
         if (miniStatus) { miniStatus.textContent = 'Please fill in your name and email.'; miniStatus.style.color = 'var(--pink, #D946EF)'; }
         return;
       }
-      var service = miniForm.querySelector('[name="service"]').value;
-      var details = miniForm.querySelector('[name="details"]').value.trim();
+      if (!service) {
+        if (miniStatus) { miniStatus.textContent = 'Please choose the service you need.'; miniStatus.style.color = 'var(--pink, #D946EF)'; }
+        return;
+      }
+      if (!details) {
+        if (miniStatus) { miniStatus.textContent = 'Please add a few details about your project.'; miniStatus.style.color = 'var(--pink, #D946EF)'; }
+        return;
+      }
+      if (consent && !consent.checked) {
+        if (miniStatus) { miniStatus.textContent = 'Please confirm you agree to be contacted to send your message.'; miniStatus.style.color = 'var(--pink, #D946EF)'; }
+        return;
+      }
+
       if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
       if (miniStatus) { miniStatus.textContent = ''; }
       submitForm(miniForm, {
-        mailtoSubject: 'New enquiry from ' + first + ' ' + last + (service ? ' — ' + service : ''),
-        mailtoBody: 'Name: ' + first + ' ' + last + '\nEmail: ' + email + '\nService: ' + service + '\n\n' + details
+        mailtoSubject: 'New enquiry from ' + name + (serviceLabel ? ' — ' + serviceLabel : ''),
+        mailtoBody: 'Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + (phone || 'n/a') + '\nCompany: ' + (company || 'n/a') +
+          '\nService: ' + serviceLabel + '\nBudget: ' + (budgetLabel || 'n/a') + '\nTimeline: ' + (timelineLabel || 'n/a') + '\n\n' + details
       }).then(function () {
         if (btn) btn.textContent = 'Message Sent ✓';
         if (miniStatus) { miniStatus.style.color = 'var(--teal, #38E8D4)'; miniStatus.textContent = "Thanks — we've received your message and will reply within one business day."; }
