@@ -699,6 +699,18 @@ footer{border-top:1px solid var(--border); padding-top:70px; background:var(--bg
 .pkg-cta-row .pkg-cta-secondary{width:100%; justify-content:center; font-size:13px; font-weight:600; color:var(--muted); border:1px solid var(--border); border-radius:10px; padding:12px 20px; text-align:center; transition:border-color .3s, color .3s;}
 .pkg-cta-row .pkg-cta-secondary:hover{border-color:var(--blue); color:var(--text);}
 
+/* ---- package finder (replaces comparison table) ---- */
+.pkg-finder-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+.pkg-finder-card{display:block; border:1px solid var(--border); border-radius:var(--radius-lg); background:rgba(255,255,255,0.02); padding:28px 26px; transition:transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s, background .35s;}
+.pkg-finder-card:hover{transform:translateY(-5px); border-color:rgba(139,92,246,0.45); background:rgba(255,255,255,0.035);}
+.pkg-finder-tag{font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--teal); display:block; margin-bottom:14px;}
+.pkg-finder-scenario{font-size:15px; color:#D5D9E4; line-height:1.6; font-style:italic; margin-bottom:24px; min-height:76px;}
+.pkg-finder-result{display:flex; align-items:center; justify-content:space-between; padding-top:18px; border-top:1px solid var(--border-soft);}
+.pkg-finder-name{font-family:'Space Grotesk'; font-weight:700; font-size:15px; color:var(--text);}
+.pkg-finder-result svg{width:17px; height:17px; stroke:var(--blue); transition:transform .3s, stroke .3s; flex-shrink:0;}
+.pkg-finder-card:hover .pkg-finder-result svg{transform:translateX(4px); stroke:var(--teal);}
+@media(max-width:900px){.pkg-finder-grid{grid-template-columns:1fr;} .pkg-finder-scenario{min-height:0;}}
+
 /* ---- process flow (non-numbered, replaces old comparison table + numbered steps) ---- */
 .process-flow{display:flex; align-items:flex-start; gap:0;}
 .process-step{flex:1; min-width:0; text-align:center; padding:0 12px;}
