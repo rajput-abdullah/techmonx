@@ -427,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var miniStatus = document.getElementById('miniFormStatus');
 
     /* preselect the "Service required" dropdown when arriving via a service-specific
-       link, e.g. /contact?service=web or /contact#lead-engine, "where technically possible" */
+       link, e.g. /contact?service=web or /contact#starter, "where technically possible" */
     (function preselectService() {
       var serviceSelect = miniForm.querySelector('[name="service"]');
       if (!serviceSelect) return;
@@ -438,9 +438,9 @@ document.addEventListener('DOMContentLoaded', function () {
       raw = raw.toLowerCase().trim();
       var map = {
         'ai': 'ai-automation', 'ai-automation': 'ai-automation', 'automation': 'ai-automation',
-        'lead-engine': 'lead-engine', 'ai-lead-engine': 'lead-engine',
-        'operations-hub': 'operations-hub', 'ai-operations-hub': 'operations-hub',
-        'support-agent': 'support-agent', 'ai-customer-support': 'support-agent', 'ai-support': 'support-agent',
+        'starter': 'starter', 'lead-engine': 'starter', 'ai-lead-engine': 'starter', 'support-agent': 'starter', 'ai-customer-support': 'starter', 'ai-support': 'starter',
+        'growth': 'growth',
+        'pro': 'pro', 'operations-hub': 'pro', 'ai-operations-hub': 'pro',
         'web': 'web', 'web-development': 'web',
         'mobile': 'mobile', 'mobile-app-development': 'mobile', 'app': 'mobile',
         'saas': 'saas', 'saas-development': 'saas', 'saas-crm': 'saas',
