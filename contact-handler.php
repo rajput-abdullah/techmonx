@@ -4,14 +4,19 @@
  * Receives POSTs from the "Let's Connect" form, the Book a Meeting modal,
  * and the TechMonx Assistant chat widget. For every submission it:
  *   1. Computes smart tags from the visitor's own answers (service interest,
- *      budget, timeline, enquiry source).
+ *      budget, timeline, enquiry source), including a Priority: High flag
+ *      for high-intent leads (big budget, urgent timeline, or a booking).
  *   2. Logs the lead to a protected local file (leads/leads-log.jsonl) so
  *      nothing is ever lost even if email or the CRM webhook is down.
- *   3. Emails the team an instant alert with the tags up top.
+ *   3. Emails the team an instant alert with the tags up top — high-priority
+ *      leads get a distinct 🔥 subject prefix so they aren't missed.
  *   4. Sends the lead a short introductory auto-reply confirming receipt.
  *   5. Optionally POSTs the same lead + tags to an external CRM webhook
  *      (e.g. a Google Apps Script Web App bound to a Google Sheet) if
- *      $crmWebhookUrl below has been set.
+ *      $crmWebhookUrl below has been set. Contact-form leads who tick the
+ *      separate marketing opt-in checkbox are enrolled by that same script
+ *      into a 2-week email drip sequence (welcome, educational touchpoints,
+ *      reminders) — see /leads/apps-script-webhook.gs.txt.
  * No paid third-party services are required for steps 1-4 — only step 5
  * needs a webhook URL, and step 5 is skipped silently if none is set.
  */
@@ -153,6 +158,14 @@ function computeTags($formType, $fields) {
 }
 
 /**
+ * True if the tag list contains a high-intent priority flag. Used to give
+ * high-priority leads a distinct, impossible-to-miss email alert.
+ */
+function isHighPriority($tags) {
+    return in_array('Priority: High', $tags, true);
+}
+
+/**
  * Append the lead to the protected local log. Never throws — a logging
  * failure must not stop the email flow.
  */
@@ -221,7 +234,7 @@ if ($formType === 'booking') {
 
     $tags = computeTags('booking', []);
 
-    $teamSubject = 'New meeting request from ' . $name;
+    $teamSubject = (isHighPriority($tags) ? '🔥 HIGH-PRIORITY — ' : '') . 'New meeting request from ' . $name;
     $teamBody  = 'Tags: ' . implode(', ', $tags) . "\n\n";
     $teamBody .= "New meeting request via techmonx.co.uk\n\n";
     $teamBody .= "Name: $name\nEmail: $email\nPreferred date: $date\nPreferred time: $time\nNotes: $notes\n";
@@ -252,7 +265,7 @@ if ($formType === 'booking') {
 
     $tags = computeTags('chat', []);
 
-    $teamSubject = 'New enquiry via TechMonx site chat';
+    $teamSubject = (isHighPriority($tags) ? '🔥 HIGH-PRIORITY — ' : '') . 'New enquiry via TechMonx site chat';
     $teamBody  = 'Tags: ' . implode(', ', $tags) . "\n\n";
     $teamBody .= "New chat enquiry via techmonx.co.uk\n\n";
     $teamBody .= "From: $email\n\nMessage:\n$message\n";
@@ -280,6 +293,7 @@ if ($formType === 'booking') {
     $timeline = clean($_POST['timeline'] ?? '');
     $details  = clean($_POST['details'] ?? '');
     $consent  = !empty($_POST['consent']);
+    $marketingConsent = !empty($_POST['marketing_consent']);
 
     if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $service === '' || $details === '' || !$consent) {
         http_response_code(422);
@@ -290,7 +304,7 @@ if ($formType === 'booking') {
     $tags = computeTags('contact', ['service' => $service, 'budget' => $budget, 'timeline' => $timeline]);
     $serviceName = serviceLabel($service) ?? $service;
 
-    $teamSubject = "New enquiry from $name" . ($serviceName ? " — $serviceName" : '');
+    $teamSubject = (isHighPriority($tags) ? '🔥 HIGH-PRIORITY — ' : '') . "New enquiry from $name" . ($serviceName ? " — $serviceName" : '');
     $teamBody  = 'Tags: ' . implode(', ', $tags) . "\n\n";
     $teamBody .= "New contact form submission via techmonx.co.uk\n\n";
     $teamBody .= "Name: $name\nEmail: $email\nPhone: " . ($phone !== '' ? $phone : 'n/a') . "\nCompany: " . ($company !== '' ? $company : 'n/a') .
@@ -310,6 +324,7 @@ if ($formType === 'booking') {
         'service' => $service, 'service_label' => $serviceName,
         'budget' => $budget, 'timeline' => $timeline, 'details' => $details,
         'tags' => $tags,
+        'marketing_consent' => $marketingConsent,
     ];
 }
 

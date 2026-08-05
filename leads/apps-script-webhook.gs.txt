@@ -1,4 +1,4 @@
-TechMonx Leads — Google Sheet webhook (optional CRM layer)
+TechMonx Leads — Google Sheet webhook + 14-day drip campaign
 ============================================================
 
 Your website already captures every lead (contact form, chat widget,
@@ -6,79 +6,355 @@ booking modal), tags it, logs it to a protected file on the server, and
 sends your team an instant email alert plus the visitor an introductory
 auto-reply — all of that already works with no setup.
 
-This file adds an OPTIONAL extra step: every new lead also gets appended
-as a row to a Google Sheet you control, so you have a shareable, filterable
-lead list without needing to log into the server. Takes about 3 minutes.
+This script adds two extra layers, both running on the free Google
+Sheets + Apps Script stack (no paid ESP required):
 
-STEP 1 — Create the sheet
---------------------------
-1. Go to https://sheets.google.com and create a new blank spreadsheet.
-2. Rename it "TechMonx Leads" (click the title top-left).
-3. In row 1, add these column headers (A1:L1):
-   Timestamp | Form Type | Name | Email | Phone | Company | Service | Budget | Timeline | Tags | Details | Notes
+  1. Every new lead also gets appended as a row to a Google Sheet you
+     control ("TechMonx Leads"), so you have a shareable, filterable
+     lead list without logging into the server.
 
-STEP 2 — Add the script
-------------------------
-1. In the sheet, go to Extensions > Apps Script.
-2. Delete anything in the editor and paste the code below.
-3. Click the disk/Save icon, name the project "TechMonx Leads Webhook".
+  2. Contact-form leads who tick the separate "Also send me occasional
+     tips and updates" marketing opt-in checkbox are automatically
+     enrolled into a 6-email, 14-day drip sequence: a Day-0 welcome,
+     three educational touchpoints (Day 2/5/9) drawing on real
+     portfolio case studies and blog posts, and two reminder emails
+     (Day 12/14). Every email includes a working unsubscribe link.
 
---- PASTE BELOW THIS LINE INTO THE APPS SCRIPT EDITOR ---
+  Leads who DON'T tick the marketing checkbox still get the normal
+  one-off "thanks for reaching out" auto-reply from contact-handler.php
+  — they are never enrolled in the drip.
+
+THIS IS ALREADY LIVE — the sections below are a reference/backup in
+case the Apps Script project ever needs to be rebuilt from scratch.
+
+Sheet: "TechMonx Leads"
+Apps Script project: "TechMonx Leads Webhook"
+Live webhook URL (already wired into contact-handler.php):
+  https://script.google.com/macros/s/AKfycby6EJnB2kD2mUTgQ4EXoDtjH8EhIQFB3UjNVK2yyCOiSKY-15qQbR9g7ZfPlvnZgPiUiQ/exec
+
+SHEET SCHEMA (row 1 headers, columns A–S)
+------------------------------------------
+A Timestamp | B Form Type | C Name | D Email | E Phone | F Company |
+G Service | H Budget | I Timeline | J Tags | K Details | L Notes |
+M Marketing Consent | N Unsub Token | O Drip Status | P Drip Stage |
+Q Next Send | R Last Sent | S Enrolled Date
+
+Drip Status values: active | completed | unsubscribed
+Drip Stage: 0 (Day 0, sent immediately on enrollment) through 5 (Day 14,
+the final reminder). After stage 5 sends, Drip Status flips to
+"completed" automatically.
+
+REBUILDING FROM SCRATCH
+-------------------------
+1. Go to https://sheets.google.com, create a blank spreadsheet, rename
+   it "TechMonx Leads", and add the headers above to row 1.
+2. Extensions > Apps Script. Delete any starter code and paste the full
+   script below. Save, name the project "TechMonx Leads Webhook".
+3. Run the "installDailyTrigger" function once from the editor (select
+   it in the function dropdown, click Run). Google will prompt for
+   authorization the first time — click through and Allow. This installs
+   a daily 9am trigger that sends whichever drip stage is due for each
+   active lead.
+4. The first time a real lead enrolls and the script tries to send an
+   email, it will also need to authorize the Gmail-send scope
+   (script.send_mail) — this happens automatically the first time
+   MailApp.sendEmail actually runs; if the very first send fails with a
+   permissions error, open Executions in the left sidebar, find the
+   failed run, and click "Click here to provide permissions".
+5. Deploy > Manage deployments > pencil/edit icon on the existing
+   deployment > Version: "New version" > Deploy. This keeps the same
+   /exec URL. (Use "New deployment" only if starting completely fresh —
+   that would generate a different URL, which would then need to be
+   re-pasted into $crmWebhookUrl in contact-handler.php.)
+6. Copy the Web app URL (ends in /exec) into contact-handler.php:
+     $crmWebhookUrl = 'PASTE_YOUR_URL_HERE';
+
+--- PASTE BELOW THIS LINE INTO THE APPS SCRIPT EDITOR (Code.gs) ---
+
+// ============================================================
+// TechMonx Leads Webhook + Drip Campaign Engine
+// ============================================================
+
+var SHEET_NAME = 'Sheet1';
+
+var COL = {
+  TIMESTAMP: 1,
+  FORM_TYPE: 2,
+  NAME: 3,
+  EMAIL: 4,
+  PHONE: 5,
+  COMPANY: 6,
+  SERVICE: 7,
+  BUDGET: 8,
+  TIMELINE: 9,
+  TAGS: 10,
+  DETAILS: 11,
+  NOTES: 12,
+  MARKETING_CONSENT: 13,
+  UNSUB_TOKEN: 14,
+  DRIP_STATUS: 15,
+  DRIP_STAGE: 16,
+  NEXT_SEND: 17,
+  LAST_SENT: 18,
+  ENROLLED_DATE: 19
+};
+
+var DRIP_OFFSETS = [0, 2, 5, 9, 12, 14];
 
 function doPost(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet1')
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME)
     || SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   var data = JSON.parse(e.postData.contents);
 
   var tags = Array.isArray(data.tags) ? data.tags.join(', ') : '';
+  var name = data.name || '';
+  var email = data.email || '';
+  var service = data.service_label || data.service || '';
+  var marketingConsent = data.marketing_consent === true || data.marketing_consent === 'true' || data.marketing_consent === 'on';
 
-  sheet.appendRow([
+  var row = [
     data.timestamp || new Date().toISOString(),
     data.form_type || '',
-    data.name || '',
-    data.email || '',
+    name,
+    email,
     data.phone || '',
     data.company || '',
-    data.service_label || data.service || '',
+    service,
     data.budget || '',
     data.timeline || '',
     tags,
     data.details || '',
-    data.notes || data.message || ''
-  ]);
+    data.notes || data.message || '',
+    marketingConsent ? 'TRUE' : 'FALSE',
+    '',
+    '',
+    '',
+    '',
+    '',
+    ''
+  ];
+
+  sheet.appendRow(row);
+  var rowNum = sheet.getLastRow();
+
+  if (marketingConsent && email) {
+    enrollInDrip_(sheet, rowNum, name, email, service);
+  }
 
   return ContentService.createTextOutput(JSON.stringify({ ok: true }))
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+function enrollInDrip_(sheet, rowNum, name, email, service) {
+  var token = Utilities.getUuid();
+  var now = new Date();
+
+  sheet.getRange(rowNum, COL.UNSUB_TOKEN).setValue(token);
+  sheet.getRange(rowNum, COL.DRIP_STATUS).setValue('active');
+  sheet.getRange(rowNum, COL.ENROLLED_DATE).setValue(now);
+
+  sendDripEmail_(0, name, email, service, token);
+
+  sheet.getRange(rowNum, COL.DRIP_STAGE).setValue(1);
+  sheet.getRange(rowNum, COL.LAST_SENT).setValue(now);
+  sheet.getRange(rowNum, COL.NEXT_SEND).setValue(addDays_(now, DRIP_OFFSETS[1]));
+}
+
+function addDays_(date, days) {
+  var d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+function sendDripEmails() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+
+  var range = sheet.getRange(2, 1, lastRow - 1, COL.ENROLLED_DATE);
+  var values = range.getValues();
+  var now = new Date();
+
+  for (var i = 0; i < values.length; i++) {
+    var r = values[i];
+    var status = r[COL.DRIP_STATUS - 1];
+    var stage = r[COL.DRIP_STAGE - 1];
+    var nextSend = r[COL.NEXT_SEND - 1];
+
+    if (status !== 'active') continue;
+    if (!nextSend || new Date(nextSend) > now) continue;
+
+    var rowNum = i + 2;
+    var name = r[COL.NAME - 1];
+    var email = r[COL.EMAIL - 1];
+    var service = r[COL.SERVICE - 1];
+    var token = r[COL.UNSUB_TOKEN - 1];
+
+    sendDripEmail_(stage, name, email, service, token);
+
+    var nextStage = stage + 1;
+    sheet.getRange(rowNum, COL.LAST_SENT).setValue(now);
+
+    if (nextStage >= DRIP_OFFSETS.length) {
+      sheet.getRange(rowNum, COL.DRIP_STATUS).setValue('completed');
+      sheet.getRange(rowNum, COL.NEXT_SEND).setValue('');
+    } else {
+      sheet.getRange(rowNum, COL.DRIP_STAGE).setValue(nextStage);
+      var enrolled = r[COL.ENROLLED_DATE - 1] || now;
+      sheet.getRange(rowNum, COL.NEXT_SEND).setValue(addDays_(enrolled, DRIP_OFFSETS[nextStage]));
+    }
+  }
+}
+
+function installDailyTrigger() {
+  var triggers = ScriptApp.getProjectTriggers();
+  for (var i = 0; i < triggers.length; i++) {
+    if (triggers[i].getHandlerFunction() === 'sendDripEmails') {
+      ScriptApp.deleteTrigger(triggers[i]);
+    }
+  }
+  ScriptApp.newTrigger('sendDripEmails')
+    .timeBased()
+    .everyDays(1)
+    .atHour(9)
+    .create();
+}
+
+function doGet(e) {
+  var token = e.parameter.token;
+  var html;
+
+  if (!token) {
+    html = '<html><body style="font-family:sans-serif;padding:40px;text-align:center;"><h2>Invalid unsubscribe link</h2></body></html>';
+    return HtmlService.createHtmlOutput(html);
+  }
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+  var lastRow = sheet.getLastRow();
+  var found = false;
+
+  if (lastRow >= 2) {
+    var tokens = sheet.getRange(2, COL.UNSUB_TOKEN, lastRow - 1, 1).getValues();
+    for (var i = 0; i < tokens.length; i++) {
+      if (tokens[i][0] === token) {
+        var rowNum = i + 2;
+        sheet.getRange(rowNum, COL.DRIP_STATUS).setValue('unsubscribed');
+        sheet.getRange(rowNum, COL.NEXT_SEND).setValue('');
+        found = true;
+        break;
+      }
+    }
+  }
+
+  html = found
+    ? '<html><body style="font-family:sans-serif;padding:40px;text-align:center;"><h2>You have been unsubscribed</h2><p>You will no longer receive these emails from TechMonx.</p></body></html>'
+    : '<html><body style="font-family:sans-serif;padding:40px;text-align:center;"><h2>Link not found</h2><p>This unsubscribe link is no longer valid.</p></body></html>';
+
+  return HtmlService.createHtmlOutput(html);
+}
+
+function sendDripEmail_(stage, name, email, service, token) {
+  if (!email) return;
+  var firstName = (name || '').split(' ')[0] || 'there';
+  var svc = service || 'your project';
+  var unsubscribeUrl = ScriptApp.getService().getUrl() + '?token=' + token;
+  var tpl = getEmailTemplate_(stage, firstName, svc, unsubscribeUrl);
+  if (!tpl) return;
+
+  MailApp.sendEmail({
+    to: email,
+    subject: tpl.subject,
+    htmlBody: tpl.body,
+    name: 'TechMonx'
+  });
+}
+
+function getEmailTemplate_(stage, name, service, unsubscribeUrl) {
+  var footer = '<p style="font-size:12px;color:#888;margin-top:32px;">' +
+    '<a href="' + unsubscribeUrl + '">Unsubscribe from these emails</a></p>';
+  var signOff = '<p>The TechMonx Team</p>';
+
+  var templates = [
+    // Stage 0 — Day 0 Welcome
+    {
+      subject: 'Thanks for reaching out, ' + name + ' 👋',
+      body:
+        '<p>Hi ' + name + ',</p>' +
+        '<p>Thanks for getting in touch with TechMonx about ' + service + '. We have received your enquiry and someone from our team will be in touch shortly to talk through the details.</p>' +
+        '<p>While you wait, here is a bit about how we work: we are a Glasgow-based software studio that has shipped real products for real clients — from AI-powered social platforms to fintech apps and enterprise automation.</p>' +
+        '<p>Take a look at some of our recent work: <a href="https://techmonx.co.uk/portfolio">techmonx.co.uk/portfolio</a></p>' +
+        signOff + footer
+    },
+    // Stage 1 — Day 2 Educational: Facebloom
+    {
+      subject: 'How we built an AI social platform from scratch',
+      body:
+        '<p>Hi ' + name + ',</p>' +
+        '<p>One of our favourite recent builds: Facebloom, an AI-powered social media platform we developed end-to-end — from architecture to launch.</p>' +
+        '<p>Here is what one of the developers who worked on it had to say:<br>' +
+        '<em>"Working with Abdullah Shahbaz on Facebloom was a great experience — sharp technical judgment and a real focus on shipping quality product."</em></p>' +
+        '<p>See the full case study: <a href="https://techmonx.co.uk/project-facebloom">techmonx.co.uk/project-facebloom</a></p>' +
+        '<p>We also wrote up the engineering lessons we learned building it: <a href="https://techmonx.co.uk/blog-ai-facebloom-lessons">techmonx.co.uk/blog-ai-facebloom-lessons</a></p>' +
+        '<p>If ' + service + ' is on your radar, this is the kind of build quality you can expect from us.</p>' +
+        signOff + footer
+    },
+    // Stage 2 — Day 5 Educational: Buff Dudes + FitCoin
+    {
+      subject: 'Real products, real results',
+      body:
+        '<p>Hi ' + name + ',</p>' +
+        '<p>A couple more examples of what we have delivered for clients:</p>' +
+        '<p><strong>Buff Dudes</strong> — a fitness app built for real users, not just a demo. One review: <em>"Buff Dudes has completely changed how I track my workouts — smooth, reliable, and genuinely useful."</em></p>' +
+        '<p><strong>FitCoin</strong> — a fitness rewards app combining habit tracking with incentives. Users say: <em>"FitCoin makes staying active actually rewarding. Great app, great concept."</em></p>' +
+        '<p>See both: <a href="https://techmonx.co.uk/project-buff-dudes">Buff Dudes</a> and <a href="https://techmonx.co.uk/project-fitcoin">FitCoin</a></p>' +
+        '<p>We also put together a practical DevOps &amp; CI/CD checklist we use on every project to keep builds reliable and deployments painless: <a href="https://techmonx.co.uk/blog-devops-cicd-checklist">techmonx.co.uk/blog-devops-cicd-checklist</a></p>' +
+        '<p>Questions about your ' + service + ' project? Just reply to this email.</p>' +
+        signOff + footer
+    },
+    // Stage 3 — Day 9 Educational: Calling All Kids
+    {
+      subject: "From idea to app store — a parent's take",
+      body:
+        '<p>Hi ' + name + ',</p>' +
+        '<p>Calling All Kids is a family app we built that parents actually rely on day to day. Here is a review from one: <em>"Calling All Kids has been brilliant for our family — easy to use and exactly what we needed."</em></p>' +
+        '<p>Full case study: <a href="https://techmonx.co.uk/project-calling-all-kids">techmonx.co.uk/project-calling-all-kids</a></p>' +
+        '<p>Depending on what you are building, you might also find these useful:<br>' +
+        '— Unity game development, what we learned: <a href="https://techmonx.co.uk/blog-unity-game-development">read here</a><br>' +
+        '— Blockchain &amp; smart contracts, explained simply: <a href="https://techmonx.co.uk/blog-blockchain-smart-contracts">read here</a></p>' +
+        '<p>Still thinking through your ' + service + ' project? Happy to jump on a quick call whenever suits.</p>' +
+        signOff + footer
+    },
+    // Stage 4 — Day 12 Reminder 1
+    {
+      subject: 'Still thinking about ' + service + '?',
+      body:
+        '<p>Hi ' + name + ',</p>' +
+        '<p>Just checking in — we know these decisions take time.</p>' +
+        '<p>If you are still weighing up options for ' + service + ', we are happy to answer questions, no pressure. We have helped clients across social platforms, fintech, fitness apps, and enterprise automation get from idea to a live, working product.</p>' +
+        '<p>A few more client stories: <a href="https://techmonx.co.uk/testimonials">techmonx.co.uk/testimonials</a></p>' +
+        '<p>If now is not the right time, that is completely fine — we will still be here.</p>' +
+        signOff + footer
+    },
+    // Stage 5 — Day 14 Reminder 2 (final)
+    {
+      subject: 'One last note from TechMonx',
+      body:
+        '<p>Hi ' + name + ',</p>' +
+        '<p>This is the last email in this short series — we do not want to clutter your inbox.</p>' +
+        '<p>If ' + service + ' is still something you are planning, the easiest next step is a quick call: <a href="https://techmonx.co.uk/contact">techmonx.co.uk/contact</a></p>' +
+        '<p>Otherwise, no action needed — you are welcome to reach out any time in future, and we will be glad to help.</p>' +
+        '<p>All the best,<br>The TechMonx Team</p>' +
+        footer
+    }
+  ];
+
+  return templates[stage] || null;
+}
+
 --- PASTE ABOVE THIS LINE ---
 
-STEP 3 — Deploy as a Web App
-------------------------------
-1. Click "Deploy" (top right) > "New deployment".
-2. Click the gear icon next to "Select type" and choose "Web app".
-3. Description: "TechMonx leads webhook".
-4. "Execute as": Me (your Google account).
-5. "Who has access": Anyone.
-   (This does NOT make your sheet public — it only allows this one
-   script endpoint to receive POST requests. Nobody can read your sheet
-   through this URL, they can only submit a new row to it, and only your
-   own website will know the URL.)
-6. Click "Deploy". Google will ask you to authorize the script the first
-   time — this is your own script running under your own account, so
-   review and click "Allow".
-7. Copy the "Web app URL" it gives you (ends in /exec).
-
-STEP 4 — Connect it to your website
---------------------------------------
-Send me that URL, or paste it yourself into contact-handler.php:
-
-  $crmWebhookUrl = 'PASTE_YOUR_URL_HERE';
-
-(near the top of the file, currently set to an empty string). Once that's
-set and pushed live, every new lead will also land in this sheet within a
-second or two of the visitor submitting the form.
-
-That's it — no ongoing cost, no third-party account, and you can always
-swap this out for a real CRM (HubSpot, Zoho, Pipedrive) later by pointing
-$crmWebhookUrl at that platform's incoming-webhook URL instead.
+That's it — no ongoing cost, no third-party ESP account. Gmail's daily
+send quota for a regular account (~100-500 emails/day) applies, which is
+comfortably enough for a small business's lead volume. If TechMonx ever
+outgrows that, swap MailApp.sendEmail for a dedicated ESP later without
+touching the rest of the pipeline.
