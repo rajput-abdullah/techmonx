@@ -1,0 +1,84 @@
+TechMonx Leads — Google Sheet webhook (optional CRM layer)
+============================================================
+
+Your website already captures every lead (contact form, chat widget,
+booking modal), tags it, logs it to a protected file on the server, and
+sends your team an instant email alert plus the visitor an introductory
+auto-reply — all of that already works with no setup.
+
+This file adds an OPTIONAL extra step: every new lead also gets appended
+as a row to a Google Sheet you control, so you have a shareable, filterable
+lead list without needing to log into the server. Takes about 3 minutes.
+
+STEP 1 — Create the sheet
+--------------------------
+1. Go to https://sheets.google.com and create a new blank spreadsheet.
+2. Rename it "TechMonx Leads" (click the title top-left).
+3. In row 1, add these column headers (A1:L1):
+   Timestamp | Form Type | Name | Email | Phone | Company | Service | Budget | Timeline | Tags | Details | Notes
+
+STEP 2 — Add the script
+------------------------
+1. In the sheet, go to Extensions > Apps Script.
+2. Delete anything in the editor and paste the code below.
+3. Click the disk/Save icon, name the project "TechMonx Leads Webhook".
+
+--- PASTE BELOW THIS LINE INTO THE APPS SCRIPT EDITOR ---
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet1')
+    || SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+
+  var tags = Array.isArray(data.tags) ? data.tags.join(', ') : '';
+
+  sheet.appendRow([
+    data.timestamp || new Date().toISOString(),
+    data.form_type || '',
+    data.name || '',
+    data.email || '',
+    data.phone || '',
+    data.company || '',
+    data.service_label || data.service || '',
+    data.budget || '',
+    data.timeline || '',
+    tags,
+    data.details || '',
+    data.notes || data.message || ''
+  ]);
+
+  return ContentService.createTextOutput(JSON.stringify({ ok: true }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+--- PASTE ABOVE THIS LINE ---
+
+STEP 3 — Deploy as a Web App
+------------------------------
+1. Click "Deploy" (top right) > "New deployment".
+2. Click the gear icon next to "Select type" and choose "Web app".
+3. Description: "TechMonx leads webhook".
+4. "Execute as": Me (your Google account).
+5. "Who has access": Anyone.
+   (This does NOT make your sheet public — it only allows this one
+   script endpoint to receive POST requests. Nobody can read your sheet
+   through this URL, they can only submit a new row to it, and only your
+   own website will know the URL.)
+6. Click "Deploy". Google will ask you to authorize the script the first
+   time — this is your own script running under your own account, so
+   review and click "Allow".
+7. Copy the "Web app URL" it gives you (ends in /exec).
+
+STEP 4 — Connect it to your website
+--------------------------------------
+Send me that URL, or paste it yourself into contact-handler.php:
+
+  $crmWebhookUrl = 'PASTE_YOUR_URL_HERE';
+
+(near the top of the file, currently set to an empty string). Once that's
+set and pushed live, every new lead will also land in this sheet within a
+second or two of the visitor submitting the form.
+
+That's it — no ongoing cost, no third-party account, and you can always
+swap this out for a real CRM (HubSpot, Zoho, Pipedrive) later by pointing
+$crmWebhookUrl at that platform's incoming-webhook URL instead.
